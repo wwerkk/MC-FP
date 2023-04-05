@@ -1,4 +1,4 @@
-import librosa, math
+import librosa, math, random
 class Streamer:
     def __init__(self, path, block_length, frame_length, hop_length, fill_value=0.):
         self.path = path
@@ -36,3 +36,16 @@ class Streamer:
             fill_value=self.fill_value
         )
         return self.stream
+    
+    ## TODO: fix for block length > 1
+    def get_frame(self, dictionary, label, verbose=False):
+        start, end = random.choice(dictionary[label])
+        if verbose:
+            print(f"Frame start and end indices: {start}, {end}")
+        start = int(start / (self.hop_length))
+        if verbose:
+            print(f"Frame is in block: {start}")
+        for i, block in enumerate(self.new()):
+            if i == start:
+                return block
+        return None
