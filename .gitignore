@@ -3,3 +3,4 @@
 models/*
 __pycache__/*
 GrainModelling-local-DIRTY.ipynb
+output/*

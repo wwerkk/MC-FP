@@ -1,24 +1,20 @@
 #import dependencies
-import math
-import random, numpy as np, scipy, matplotlib.pyplot as plt, sklearn, librosa
-import librosa.display
-import IPython.display
-import keras
-from keras.models import Model
-from keras.layers import Input, Dense
-from keras.layers import GRU
-import soundfile as sf
-from pathlib import Path
+import random, numpy as np
+from keras.models import load_model
 import json
-from numpyencoder import NumpyEncoder
-from sklearn import preprocessing, cluster
 import argparse
+
+import argparse
+import math
+
+from pythonosc.dispatcher import Dispatcher
+from pythonosc import osc_server, udp_client
 
 # Parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
-parser.add_argument("-sl", "--sequence_length", type=int, default=32)
+parser.add_argument("-sl", "--sequence_length", type=int, default=4)
 parser.add_argument("-t", "--temperature", type=float, default=1.0)
 parser.add_argument("-s", "--seed", type=int, default=-1) # -1 is random
 
@@ -33,7 +29,6 @@ temperature = args.temperature
 seed = args.seed
 
 print(f"Path: {path}")
-
 # Load model and necessary dictionaries
 print(f"Loading model...")
 if path[-1] == "/":
@@ -64,7 +59,7 @@ if verbose:
 encoded_features = json.load(open(features_path))
 if verbose:  
     print(f"Encoded features loaded.")
-model = keras.models.load_model(model_path)
+model = load_model(model_path)
 if verbose:  
     print(f"Model loaded.")
     model.summary()
@@ -88,7 +83,10 @@ def generate(sequence_length, temperature=1.0, seed=-1):
         seq = np.array([random.choice(list(encoded_features))])
     else:
         seq = np.array([(encoded_features[seed])])
-    print("\nGenerating with seed:", "random" if (seed == -1) else seed)
+    init_seq_len = seq.shape[1]
+    print(f"Generating sequence of length: {sequence_length}")
+    print("Seed:", "random" if (seed == -1) else seed)
+    print(f"Seed sequence length: {seq.shape}")
     if verbose:
         print(np.argmax(seq, axis=1))
     print("Temperature:\n", temperature)
@@ -106,18 +104,35 @@ def generate(sequence_length, temperature=1.0, seed=-1):
         # print("Predicted sequence:\n", seq.astype(int))
         # print("\n", seq.shape)
         # print("Predicted sequence:\n", seq.astype(int))
-    return seq
+    g_ints = np.argmax(seq[0], axis=1)
+    return g_ints[init_seq_len:]
+
+def handle_i(unused_addr, args, msg):
+  print(f"[{args[0]}] ~ {msg}")
+  if msg == "ping":
+    client.send_message("/i", "pong")
+
+def handle_g(unused_addr, args, msg):
+    if msg == "bang":
+        print("Generating sequence...")
+        # Generate token sequence
+        if seed == -1:
+            seq = generate(sequence_length=sequence_length, temperature=temperature)
+        else: 
+            seq = generate(sequence_length=sequence_length, seed=seed, temperature=temperature)
+        seq = seq.tolist()
+        print("Generated sequence:")
+        print(seq)
+        client.send_message("/generate", seq)
+        print("Predictions sent.")
 
 if __name__ == "__main__":
-
-
-    # Generate token sequence
-    if seed == -1:
-        seq = generate(sequence_length=sequence_length, temperature=temperature)
-    else: 
-        seq = generate(sequence_length=sequence_length, seed=seed, temperature=temperature)
-    g_ints = np.argmax(seq[0], axis=1)
-    print("Generated sequence:")
-    print(g_ints)
-    g_ints = [i for i in g_ints]
-    print("Seems like it worked.")
+    # Set up OSC server and client
+    client = udp_client.SimpleUDPClient("127.0.0.1", 5555)
+    dispatcher = Dispatcher()
+    dispatcher.map("/i", handle_i, "i")
+    dispatcher.map("/g", handle_g, "g")
+    server = osc_server.ThreadingOSCUDPServer(
+        ("127.0.0.1", 4444), dispatcher)
+    print("Serving on {}".format(server.server_address))
+    server.serve_forever()
