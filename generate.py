@@ -84,7 +84,7 @@ def generate(sequence_length=4, temperature=1.0, seed=-1, prompt=[]):
         seq = encoded_prompt
     else:
         seq = np.array([random.choice(list(encoded_features))])
-        print("SEQ: ", seq.shape)
+        # print("SEQ: ", seq.shape)
     init_seq_len = seq.shape[1]
     if verbose:
         print(seq[0].shape)
@@ -95,7 +95,7 @@ def generate(sequence_length=4, temperature=1.0, seed=-1, prompt=[]):
     print("Temperature:\n", temperature)
     for i in range(sequence_length):
         preds = model.predict(seq, verbose=0)
-        print(preds)
+        # print(preds)
         p_label = sample(preds[0], temperature)
         encoded_pred = np.eye(n_classes)[p_label].astype(bool)
         encoded_pred = np.array([[encoded_pred]])
