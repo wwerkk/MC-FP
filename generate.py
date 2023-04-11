@@ -14,9 +14,6 @@ from pythonosc import osc_server, udp_client
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
-parser.add_argument("-sl", "--sequence_length", type=int, default=4)
-parser.add_argument("-t", "--temperature", type=float, default=1.0)
-parser.add_argument("-s", "--seed", type=int, default=-1) # -1 is random
 
 args = parser.parse_args()
 if args.path is None:
@@ -24,9 +21,6 @@ if args.path is None:
     exit()
 path = args.path
 verbose = args.verbose
-sequence_length = args.sequence_length
-temperature = args.temperature
-seed = args.seed
 
 print(f"Path: {path}")
 # Load model and necessary dictionaries
@@ -78,7 +72,7 @@ def sample(preds, temperature=1.0):
     return np.argmax(probas)
 
 # Generate output
-def generate(sequence_length, temperature=1.0, seed=-1):
+def generate(sequence_length=4, temperature=1.0, seed=-1):
     if seed == -1:
         seq = np.array([random.choice(list(encoded_features))])
     else:
@@ -110,28 +104,28 @@ def generate(sequence_length, temperature=1.0, seed=-1):
 def handle_i(unused_addr, args, msg):
   print(f"[{args[0]}] ~ {msg}")
   if msg == "ping":
-    client.send_message("/i", "pong")
+    client.send_message("/i/", "pong")
 
 def handle_g(unused_addr, args, msg):
-    if msg == "bang":
-        print("Generating sequence...")
-        # Generate token sequence
-        if seed == -1:
-            seq = generate(sequence_length=sequence_length, temperature=temperature)
-        else: 
-            seq = generate(sequence_length=sequence_length, seed=seed, temperature=temperature)
-        seq = seq.tolist()
-        print("Generated sequence:")
-        print(seq)
-        client.send_message("/generate", seq)
-        print("Predictions sent.")
+    msg = msg.split(" ")
+    # print(msg)
+    sequence_length = int(msg[0])
+    temperature = float(msg[1])
+    print("Generating sequence...")
+    # Generate token sequence
+    seq = generate(sequence_length=sequence_length, temperature=temperature)
+    seq = seq.tolist()
+    print("Generated sequence:")
+    print(seq)
+    client.send_message("/generate/", seq)
+    print("Predictions sent.")
 
 if __name__ == "__main__":
     # Set up OSC server and client
     client = udp_client.SimpleUDPClient("127.0.0.1", 5555)
     dispatcher = Dispatcher()
-    dispatcher.map("/i", handle_i, "i")
-    dispatcher.map("/g", handle_g, "g")
+    dispatcher.map("/i/", handle_i, "i")
+    dispatcher.map("/g/", handle_g, "g")
     server = osc_server.ThreadingOSCUDPServer(
         ("127.0.0.1", 4444), dispatcher)
     print("Serving on {}".format(server.server_address))
