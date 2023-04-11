@@ -72,15 +72,22 @@ def sample(preds, temperature=1.0):
     return np.argmax(probas)
 
 # Generate output
-def generate(sequence_length=4, temperature=1.0, seed=-1):
-    if seed == -1:
-        seq = np.array([random.choice(list(encoded_features))])
+def generate(sequence_length=4, temperature=1.0, seed=-1, prompt=[]):
+    if len(prompt) > 0:
+        encoded_prompt = np.eye(n_classes).astype(bool)
+        encoded_prompt = np.array([encoded_prompt])
+        if verbose:
+            print("Encoded prompt shape: ", encoded_prompt.shape)
+            print("Encoded prompt: ", encoded_prompt)
+        seq = encoded_prompt
     else:
-        seq = np.array([(encoded_features[seed])])
+        seq = np.array([random.choice(list(encoded_features))])
     init_seq_len = seq.shape[1]
-    print(f"Generating sequence of length: {sequence_length}")
-    print("Seed:", "random" if (seed == -1) else seed)
-    print(f"Seed sequence length: {seq.shape}")
+    if verbose:
+        print(seq[0].shape)
+        print(f"Generating sequence of length: {sequence_length}")
+        print("Prompt:", "random" if (len(prompt) <= 0) else prompt)
+        print(f"Prompt sequence length: {seq.shape}")
     if verbose:
         print(np.argmax(seq, axis=1))
     print("Temperature:\n", temperature)
@@ -111,9 +118,12 @@ def handle_g(unused_addr, args, msg):
     # print(msg)
     sequence_length = int(msg[0])
     temperature = float(msg[1])
+    prompt = msg[2:]
+    prompt = list(map(int, prompt))
+    print("Prompt: ", prompt)
     print("Generating sequence...")
     # Generate token sequence
-    seq = generate(sequence_length=sequence_length, temperature=temperature)
+    seq = generate(sequence_length=sequence_length, temperature=temperature, prompt=prompt)
     seq = seq.tolist()
     print("Generated sequence:")
     print(seq)
