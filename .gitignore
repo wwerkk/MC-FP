@@ -2,5 +2,6 @@
 .ipynb_checkpoints/*
 __pycache__/*
 GrainModelling-local-DIRTY.ipynb
+GrainModelling-colab.ipynb
 output/*
 padding.py

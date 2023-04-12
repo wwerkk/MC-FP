@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 193.0, 87.0, 988.0, 823.0 ],
+		"rect" : [ 193.0, 87.0, 1257.0, 823.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -46,8 +46,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 182.0, 85.0, 198.0, 57.0 ],
-					"presentation_linecount" : 2,
+					"patching_rect" : [ 182.0, 85.0, 199.0, 57.0 ],
 					"text" : "Open these subpatchers up and make sure the directory paths are correct",
 					"textcolor" : [ 1.0, 0.466666666666667, 0.0, 1.0 ]
 				}
@@ -61,7 +60,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 369.0, 388.0, 86.0, 33.0 ],
-					"presentation_linecount" : 2,
 					"text" : "Position deviation"
 				}
 
@@ -810,27 +808,26 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-74",
-					"linecount" : 5,
 					"maxclass" : "textedit",
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1312.622650325298309, 395.0, 140.0, 374.0 ],
-					"text" : "108 14 0 72 41 203 30 1 129 0 1 14 91 63 195 0 249 74 0 198 0 196 40 23 0 1 244 230 0 35 0 93"
+					"text" : "0 0 0 0"
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-67",
-					"linecount" : 8,
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 478.0, 730.5, 94.0, 116.0 ],
-					"text" : "\"32 2.1300 172 158 111 0 1 244 174 5 0 199 0 1 3 0 19 123 192 17 220 47 240 119 15 0 0 117 46 1 224 0 150 9\""
+					"patching_rect" : [ 478.0, 730.5, 64.0, 35.0 ],
+					"text" : "\"4 1.0000 0 0 0 0\""
 				}
 
 			}
@@ -2694,13 +2691,13 @@
 , 							{
 								"box" : 								{
 									"id" : "obj-215",
-									"linecount" : 6,
+									"linecount" : 4,
 									"maxclass" : "message",
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 280.0, 296.69970703125, 118.0, 89.0 ],
-									"text" : "/Users/wwerkowicz/GS/MC/MC-FP/MC-FP-master/audio-data/flux-pavillion-i-cant-stop-demuxxed-drumless.mp3"
+									"text" : "/Users/wwerkowicz/GS/MC/MC-FP/MC-FP-master/audio-data/flux.mp3"
 								}
 
 							}
@@ -4016,6 +4013,16 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-60", 0 ],
+					"order" : 0,
+					"source" : [ "obj-90", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-67", 0 ],
+					"midpoints" : [ 769.5, 420.25, 487.5, 420.25 ],
+					"order" : 1,
 					"source" : [ "obj-90", 0 ]
 				}
 
