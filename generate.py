@@ -50,9 +50,9 @@ if verbose:
 labelled_frames = json.load(open(dict_path))
 if verbose:
     print(f"Labelled frames loaded.")
-encoded_features = json.load(open(features_path))
-if verbose:  
-    print(f"Encoded features loaded.")
+# encoded_features = json.load(open(features_path))
+# if verbose:  
+    # print(f"Encoded features loaded.")
 model = load_model(model_path)
 if verbose:  
     print(f"Model loaded.")
@@ -72,32 +72,38 @@ def sample(preds, temperature=1.0):
     return np.argmax(probas)
 
 # Generate output
-def generate(sequence_length=4, temperature=1.0, seed=-1, prompt=[]):
+def generate(sequence_length=4, temperature=1.0, prompt=[]):
     if temperature <= 0:
-        temperature = 0.0001
+        temperature = 0.01
     if len(prompt) > 0:
-        encoded_prompt = np.eye(n_classes).astype(bool)
-        encoded_prompt = np.array([encoded_prompt])
+        encoded_prompt = []
+        for label in prompt:
+            encoded_label = np.eye(n_classes)[label].astype(bool).tolist() # this doesn't actually encode the prompt
+            encoded_prompt.extend([encoded_label])
+            # print("Encoded prompt shape: ", np.array(encoded_prompt).shape)
+            # print("Encoded prompt: ", encoded_prompt)
+        seq = np.array(encoded_prompt)
         if verbose:
-            print("Encoded prompt shape: ", encoded_prompt.shape)
-            print("Encoded prompt: ", encoded_prompt)
-        seq = encoded_prompt
-    else:
-        seq = np.array([random.choice(list(encoded_features))])
+            print("Encoded prompt shape: ", seq.shape)
+        if seq.shape[0] < n_classes:
+            seq = np.pad(seq, ((0, n_classes - seq.shape[0]), (0, 0)), 'constant')
+            if verbose:
+                print("Padded to shape: ", seq.shape)
         # print("SEQ: ", seq.shape)
+    # seq = np.array([random.choice(list(encoded_features))]) # prompt with random sequence of frames from original data
     init_seq_len = seq.shape[1]
     if verbose:
-        print(seq[0].shape)
         print(f"Generating sequence of length: {sequence_length}")
         print("Prompt:", prompt if (len(prompt) > 0) else "random")
-        print(f"Prompt sequence length: {seq.shape}")
+        print(f"Prompt sequence shape: {seq.shape}")
         print(np.argmax(seq, axis=1))
     print("Temperature:\n", temperature)
+    seq = np.array([seq])
     for i in range(sequence_length):
         preds = model.predict(seq, verbose=0)
         # print(preds)
         p_label = sample(preds[0], temperature)
-        encoded_pred = np.eye(n_classes)[p_label].astype(bool)
+        encoded_pred = np.eye(n_classes)[p_label].astype(bool) # encode the predicted label
         encoded_pred = np.array([[encoded_pred]])
         # print("\nPrediction: ", encoded_pred.astype(int))
         # print("\nPrediction: ", np.argmax(encoded_pred))
