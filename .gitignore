@@ -5,3 +5,4 @@ GrainModelling-local-DIRTY.ipynb
 GrainModelling-colab.ipynb
 output/*
 padding.py
+synth/patchers/debug.maxpat

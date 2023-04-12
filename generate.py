@@ -98,8 +98,8 @@ def generate(sequence_length=4, temperature=1.0, prompt=[]):
             print("Random token: ", seq)
             print("Random token shape: ", seq.shape)
         seq = np.pad(seq, ((0, n_classes - seq.shape[0]), (0, 0)), 'constant')
+    print(f"Generating sequence of length: {sequence_length}")
     if verbose:
-        print(f"Generating sequence of length: {sequence_length}")
         print("Prompt:", prompt if (len(prompt) > 0) else "random")
         print(f"Prompt sequence shape: {seq.shape}")
         print(np.argmax(seq, axis=1))
