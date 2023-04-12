@@ -1,0 +1,1 @@
+{"audio_path": "audio-data/flux-pavillion-i-cant-stop-demuxxed-drumless.mp3", "sr": 48000, "BPM": 140, "beat": 0.25, "n_classes": 256, "onset_detection": false, "hop_length": 643, "frame_length": 20572, "block_length": 1}

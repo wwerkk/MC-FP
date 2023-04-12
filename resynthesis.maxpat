@@ -1186,26 +1186,27 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-74",
+					"linecount" : 3,
 					"maxclass" : "textedit",
 					"numinlets" : 1,
 					"numoutlets" : 4,
 					"outlettype" : [ "", "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1312.622650325298309, 395.0, 140.0, 374.0 ],
-					"text" : "0 0 0 0 0 0 0 0"
+					"text" : "0 1 229 32 0 15 3 143 226 220 31 0 114 106 14 100"
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-67",
-					"linecount" : 2,
+					"linecount" : 5,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 478.0, 730.5, 94.0, 35.0 ],
-					"text" : "\"8 0.0100 0 0 0 0 0 0 0 0\""
+					"patching_rect" : [ 478.0, 730.5, 94.0, 76.0 ],
+					"text" : "\"16 2.1300 0 169 195 200 9 28 0 181 185 100 51 248 39 0 240 142\""
 				}
 
 			}
@@ -3075,7 +3076,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 280.0, 296.69970703125, 146.0, 62.0 ],
-									"text" : "\"/Users/wwerkowicz/GS/MC/MC-FP/audio-data/C-Bool - Trebles [8QthIMTu6Yk].wav\""
+									"text" : "/Users/wwerkowicz/GS/MC/MC-FP/audio-data/flux-pavillion-i-cant-stop-demuxxed-drumless.mp3"
 								}
 
 							}

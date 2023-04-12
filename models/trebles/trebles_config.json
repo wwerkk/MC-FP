@@ -1,0 +1,1 @@
+{"audio_path": "audio-data/C-Bool - Trebles [8QthIMTu6Yk].wav", "sr": 48000, "BPM": 136, "beat": 0.25, "n_classes": 256, "onset_detection": false, "hop_length": 10589, "frame_length": 21177, "block_length": 1}
