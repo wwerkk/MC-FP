@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3764158468,
+	"modificationdate" : 3764158695,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -19,16 +19,6 @@
 		}
 ,
 		"media" : 		{
-			"oishi.mp3" : 			{
-				"kind" : "audiofile",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/granular-plane/audio-data",
-					"projectrelativepath" : "../../granular-plane/audio-data"
-				}
-
-			}
-,
 			"pulsex.mp3" : 			{
 				"kind" : "audiofile",
 				"local" : 1,
@@ -121,26 +111,6 @@
 				}
 
 			}
-,
-			"oishi_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/oishi",
-					"projectrelativepath" : "../models/oishi"
-				}
-
-			}
-,
-			"oishi_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/oishi",
-					"projectrelativepath" : "../models/oishi"
-				}
-
-			}
 
 		}
 ,
@@ -171,16 +141,6 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/pulsex",
 					"projectrelativepath" : "../models/pulsex"
-				}
-
-			}
-,
-			"oishi.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/oishi",
-					"projectrelativepath" : "../models/oishi"
 				}
 
 			}

@@ -113,20 +113,6 @@
 			}
 , 			{
 				"box" : 				{
-					"fontsize" : 15.0,
-					"id" : "obj-34",
-					"linecount" : 3,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 182.0, 85.0, 199.0, 57.0 ],
-					"text" : "Open these subpatchers up and make sure the directory paths are correct",
-					"textcolor" : [ 1.0, 0.466666666666667, 0.0, 1.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-23",
 					"linecount" : 2,
 					"maxclass" : "comment",
@@ -894,13 +880,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-67",
-					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 478.0, 730.5, 73.0, 35.0 ],
-					"text" : "\"4 1.0000 0 0 0 0\""
+					"patching_rect" : [ 478.0, 730.5, 73.0, 22.0 ],
+					"text" : "\"4 1.0000\""
 				}
 
 			}
@@ -1920,7 +1905,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-12",
-					"items" : [ "trebles", ",", "flux", ",", "pulsex", ",", "oishi" ],
+					"items" : [ "trebles", ",", "flux", ",", "pulsex" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -1929,11 +1914,11 @@
 					"patching_rect" : [ 7.5, 69.300293000000011, 100.0, 22.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_enum" : [ "trebles", "flux", "pulsex", "oishi" ],
+							"parameter_enum" : [ "trebles", "flux", "pulsex" ],
 							"parameter_initial" : [ 3.0 ],
 							"parameter_initial_enable" : 1,
 							"parameter_longname" : "umenu",
-							"parameter_mmax" : 3,
+							"parameter_mmax" : 2,
 							"parameter_shortname" : "umenu",
 							"parameter_type" : 2
 						}
