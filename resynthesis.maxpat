@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 193.0, 87.0, 1409.0, 823.0 ],
+		"rect" : [ 193.0, 87.0, 988.0, 823.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,21 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"fontsize" : 15.0,
+					"id" : "obj-34",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 182.0, 85.0, 198.0, 57.0 ],
+					"presentation_linecount" : 2,
+					"text" : "Open these subpatchers up and make sure the directory paths are correct",
+					"textcolor" : [ 1.0, 0.466666666666667, 0.0, 1.0 ]
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-23",
 					"linecount" : 2,
@@ -71,7 +86,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.25, 140.0, 114.5, 60.0 ],
+					"patching_rect" : [ 223.75, 422.0, 114.5, 60.0 ],
 					"text" : "TO CONSIDER: exact frame could be picked on per-grain basis?",
 					"textcolor" : [ 0.101960784313725, 0.603921568627451, 0.003921568627451, 1.0 ]
 				}
@@ -745,27 +760,6 @@
 			}
 , 			{
 				"box" : 				{
-					"bgmode" : 0,
-					"border" : 0,
-					"clickthrough" : 0,
-					"enablehscroll" : 0,
-					"enablevscroll" : 0,
-					"id" : "obj-46",
-					"lockeddragscroll" : 0,
-					"lockedsize" : 0,
-					"maxclass" : "bpatcher",
-					"name" : "record.maxpat",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"offset" : [ 0.0, 0.0 ],
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 308.5, 717.0, 103.5, 131.754750490188599 ],
-					"viewvisibility" : 1
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"fontsize" : 30.0,
 					"id" : "obj-38",
 					"maxclass" : "comment",
@@ -823,7 +817,7 @@
 					"outlettype" : [ "", "int", "", "" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 1312.622650325298309, 395.0, 140.0, 374.0 ],
-					"text" : "0 1 179 108 211 0 212 202 0 224 218 0 113 161 146 211 156 184 26 0 0 45 203 0 159 145 104 122 0 222 162 1"
+					"text" : "122 1 211 100 184 1 0 1 97 174 252 146 148 242 0 126 17 220 12 159 89 120 233 39 238 78 0 42 143 69 162 96"
 				}
 
 			}
@@ -836,7 +830,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 478.0, 730.5, 94.0, 129.0 ],
-					"text" : "\"32 2.1300 0 1 179 108 211 0 212 202 0 224 218 0 113 161 146 211 156 184 26 0 0 45 203 0 159 145 104 122 0 222 162 1\""
+					"text" : "\"32 2.1300 120 210 122 1 163 0 43 244 160 0 0 208 39 237 151 247 13 0 197 0 20 160 208 194 139 60 138 0 225 230 179 249\""
 				}
 
 			}
@@ -2700,13 +2694,13 @@
 , 							{
 								"box" : 								{
 									"id" : "obj-215",
-									"linecount" : 4,
+									"linecount" : 6,
 									"maxclass" : "message",
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 280.0, 296.69970703125, 146.0, 62.0 ],
-									"text" : "/Users/wwerkowicz/GS/MC/MC-FP/audio-data/flux-pavillion-i-cant-stop-demuxxed-drumless.mp3"
+									"patching_rect" : [ 280.0, 296.69970703125, 118.0, 89.0 ],
+									"text" : "/Users/wwerkowicz/GS/MC/MC-FP/MC-FP-master/audio-data/flux-pavillion-i-cant-stop-demuxxed-drumless.mp3"
 								}
 
 							}
@@ -4050,21 +4044,7 @@
 			"inherited_shortname" : 1
 		}
 ,
-		"dependency_cache" : [ 			{
-				"name" : "patchername.js",
-				"bootpath" : "~/GitHub/max",
-				"patcherrelativepath" : "../../../../GitHub/max",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "record.maxpat",
-				"bootpath" : "~/GitHub/max",
-				"patcherrelativepath" : "../../../../GitHub/max",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
+		"dependency_cache" : [  ],
 		"autosave" : 0
 	}
 
