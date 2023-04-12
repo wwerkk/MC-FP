@@ -1,1 +1,1 @@
-{"audio_path": "/Users/wwerkowicz/GS/MC/MC-FP/MC-FP-master/audio-data/C-Bool - Trebles [8QthIMTu6Yk].mp3", "sr": 48000, "BPM": 136, "beat": 0.25, "n_classes": 256, "onset_detection": false, "hop_length": 10589, "frame_length": 21177, "block_length": 1}
+{"audio_path": "/Users/wwerkowicz/GS/MC/MC-FP/MC-FP-master/audio-data/trebles.mp3", "sr": 48000, "BPM": 136, "beat": 0.25, "n_classes": 256, "onset_detection": false, "hop_length": 10589, "frame_length": 21177, "block_length": 1}
