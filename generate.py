@@ -91,12 +91,19 @@ def generate(sequence_length=4, temperature=1.0, prompt=[]):
                 print("Padded to shape: ", seq.shape)
         # print("SEQ: ", seq.shape)
     # seq = np.array([random.choice(list(encoded_features))]) # prompt with random sequence of frames from original data
-    init_seq_len = seq.shape[1]
+    else:
+        seq = np.eye(n_classes)[0].astype(bool) # prompt with token 0
+        seq = np.array([seq])
+        if verbose:
+            print("Random token: ", seq)
+            print("Random token shape: ", seq.shape)
+        seq = np.pad(seq, ((0, n_classes - seq.shape[0]), (0, 0)), 'constant')
     if verbose:
         print(f"Generating sequence of length: {sequence_length}")
         print("Prompt:", prompt if (len(prompt) > 0) else "random")
         print(f"Prompt sequence shape: {seq.shape}")
         print(np.argmax(seq, axis=1))
+    init_seq_len = seq.shape[1]
     print("Temperature:\n", temperature)
     seq = np.array([seq])
     for i in range(sequence_length):
