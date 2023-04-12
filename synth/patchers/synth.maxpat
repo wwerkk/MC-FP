@@ -880,12 +880,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-67",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 478.0, 730.5, 73.0, 22.0 ],
-					"text" : "\"4 1.0000\""
+					"patching_rect" : [ 478.0, 730.5, 73.0, 35.0 ],
+					"text" : "\"4 1.0000 0 0 0 0\""
 				}
 
 			}
@@ -2758,7 +2759,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 280.0, 296.69970703125, 118.0, 22.0 ],
-									"text" : "oishi.mp3"
+									"text" : "pulsex.mp3"
 								}
 
 							}

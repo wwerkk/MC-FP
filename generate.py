@@ -36,7 +36,7 @@ features_path = path + f"{name}_features.json"
 model_path = path + f"{name}.keras"
 
 config = json.load(open(config_path))
-audio_path = config['audio_path']
+filename = config['filename']
 sr = config['sr']
 n_classes = config['n_classes']
 onset_detection = config['onset_detection']
