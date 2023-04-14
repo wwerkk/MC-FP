@@ -1,4 +1,10 @@
 numpy
+numpyencoder
 python-osc
 tensorflow
 keras
+scipy
+matplotlib
+scikit-learn
+librosa
+soundfile
