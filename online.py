@@ -1,16 +1,15 @@
 #import dependencies
-import random, numpy as np
+import numpy as np
 from keras.models import load_model
 import json
 import argparse
-import math
 
 from pythonosc.dispatcher import Dispatcher
 from pythonosc import osc_server, udp_client
 
 # Parse arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", "--path", type=str)
+parser.add_argument("-m", "--model_path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
 
 args = parser.parse_args()
