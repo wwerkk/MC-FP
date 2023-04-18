@@ -3,8 +3,6 @@ import random, numpy as np
 from keras.models import load_model
 import json
 import argparse
-
-import argparse
 import math
 
 from pythonosc.dispatcher import Dispatcher
