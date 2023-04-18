@@ -1,9 +1,8 @@
 #import dependencies
-import random, numpy as np
+import numpy as np
 from keras.models import load_model
 import json
 import argparse
-import math
 
 from pythonosc.dispatcher import Dispatcher
 from pythonosc import osc_server, udp_client
