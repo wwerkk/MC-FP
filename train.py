@@ -17,7 +17,12 @@ from streamer import Streamer
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--audio_path", type=str)
 parser.add_argument("-bl", "--block_length", type=int, default=1)
-parser.add_argument("-plt", "--plot", type=int, default=0)
+parser.add_argument("-fl", "--frame_length", type=int, default=48000)
+parser.add_argument("-hl", "--hop_length", type=int, default=12000)
+parser.add_argument("-fls", "--frame_length_s", type=float, default=None)
+parser.add_argument("-hls", "--hop_length_s", type=float, default=None)
+parser.add_argument("-bpm", "--bpm", type=int, default=None)
+parser.add_argument("-bt", "--beat", type=float, default=None)
 parser.add_argument("-nc", "--n_classes", type=int, default=256)
 parser.add_argument("-e", "--epochs", type=int, default=3)
 parser.add_argument("-bs", "--batch_size", type=int, default=64)
@@ -30,6 +35,7 @@ parser.add_argument("-k_val", "--k_val", type=int, default=2)
 parser.add_argument("-n", "--name", type=str, default="newmodel") # model name
 parser.add_argument("-d", "--directory", type=str, default=".") # directory to save model
 parser.add_argument("-v", "--verbose", type=bool, default=False)
+parser.add_argument("-plt", "--plot", type=int, default=0)
 
 args = parser.parse_args()
 if args.audio_path is None:
@@ -41,7 +47,6 @@ elif not Path(args.audio_path).exists():
 
 audio_path = args.audio_path
 block_length = args.block_length
-PLOT = args.plot
 n_classes = args.n_classes
 epochs = args.epochs
 batch_size = args.batch_size
@@ -55,16 +60,18 @@ k = args.k_val
 name = args.name
 directory = args.directory
 verbose = args.verbose
+PLOT = args.plot
 
-BPM = 167
-beat = 1/8
-frame_length_s = (4 * beat * 60 / BPM)
-hop_length_s = frame_length_s * (1/8)
+BPM = args.bpm
+beat = args.beat
+if BPM is None and beat is not None or BPM is not None and beat is None:
+    print("Please specify both BPM and beat if you are using metered divisions.")
+    exit()
+frame_length_s = (4 * beat * 60 / BPM) if BPM is not None else args.frame_length_s
+hop_length_s = frame_length_s * (1/8) if BPM is not None else args.hop_length_s
 sr = librosa.get_samplerate(audio_path)
-frame_length = math.ceil(frame_length_s * sr)
-hop_length = math.ceil(hop_length_s * sr)
-# frame_length = 2048 # alternatively, set it in samples
-# hop_length = 512 # alternatively, set it in samples 
+frame_length = math.ceil(frame_length_s * sr) if frame_length_s is not None else args.frame_length
+hop_length = math.ceil(hop_length_s * sr) if hop_length_s is not None else args.hop_length
 stream = Streamer(audio_path, block_length, frame_length, hop_length)
 
 # helper function to extract features from audio block
