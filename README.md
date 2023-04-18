@@ -1,5 +1,7 @@
 # Music Computing Final Project
-Implementing language modelling for concatenative audio synthesis.
+This project attempts to implement language modelling for concatenative audio synthesis using RNNs (GRU).
+
+For more information, refer to the [Wiki](https://github.com/wwerkk/MC-FP/wiki).
 
 ## Quick start
 After cloning this repo, you will have to install requirements:
