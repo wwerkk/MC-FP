@@ -4,7 +4,7 @@ from pathlib import Path
 import math
 import numpy as np, matplotlib.pyplot as plt, librosa
 import librosa.display
-import IPython.display
+# import IPython.display
 from keras.models import Model
 from keras.layers import Input, Dense
 from keras.layers import GRU
@@ -35,7 +35,6 @@ parser.add_argument("-k_val", "--k_val", type=int, default=2)
 parser.add_argument("-n", "--name", type=str, default="newmodel") # model name
 parser.add_argument("-d", "--directory", type=str, default=".") # directory to save model
 parser.add_argument("-v", "--verbose", type=bool, default=False)
-parser.add_argument("-plt", "--plot", type=int, default=0)
 
 args = parser.parse_args()
 if args.audio_path is None:
@@ -60,7 +59,6 @@ k = args.k_val
 name = args.name
 directory = args.directory
 verbose = args.verbose
-PLOT = args.plot
 
 BPM = args.bpm
 beat = args.beat
@@ -103,7 +101,7 @@ if verbose:
     print(features_scaled.min(axis=0))
     print(features_scaled.max(axis=0))
     print(features_scaled[0]) # type: ignore
-if PLOT:
+if verbose:
     plt.scatter(features_scaled[:,0], features_scaled[:,1]) # type: ignore
     plt.xlabel('Zero Crossing Rate (scaled)')
     plt.ylabel('Spectral Centroid (scaled)')   
@@ -135,21 +133,6 @@ for label, frame in zip(labels, frames):
 if verbose:    
     print(len(labelled_frames[0])) # sanity check
     print(labelled_frames[0][0], labelled_frames[0][1]) # sanity check
-
-# preview cluster PLOTs
-for i in range(PLOT):
-    print("------------------")
-    print("Label: ", i)
-    f = stream.get_frame(dictionary=labelled_frames, label=i)
-    D = librosa.amplitude_to_db(np.abs(librosa.stft(f, hop_length=1024)),
-                            ref=np.max) # type: ignore
-    librosa.display.specshow(D, y_axis='log', sr=sr, hop_length=1024,
-                        x_axis='time')
-    plt.show()
-    librosa.display.waveshow(f, sr=sr) # display the waveform
-    plt.show()
-    display(IPython.display.Audio(f, rate=sr)) # play audio file using ipython display
-    plt.show()
 
 # One-hot encode
 # build a subsequence for every <step> frames
