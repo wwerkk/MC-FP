@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
 parser.add_argument("-sl", "--sequence_length", type=int, default=16)
-parser.add_argument("-t", "--temperature", type=float, default=1.0)
+parser.add_argument("-t", "--temperature", type=float, default=0.0)
 parser.add_argument("--prompt", type=str, default="0")
 parser.add_argument("-w", "--workers", type=int, default=2)
 
