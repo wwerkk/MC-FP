@@ -23,6 +23,7 @@ parser.add_argument("-fls", "--frame_length_s", type=float, default=None)
 parser.add_argument("-hls", "--hop_length_s", type=float, default=None)
 parser.add_argument("-bpm", "--bpm", type=int, default=None)
 parser.add_argument("-bt", "--beat", type=float, default=None)
+parser.add_argument("-hb", "--hop_beats", type=float, default=None)
 parser.add_argument("-nc", "--n_classes", type=int, default=256)
 parser.add_argument("-e", "--epochs", type=int, default=3)
 parser.add_argument("-bs", "--batch_size", type=int, default=64)
@@ -62,11 +63,12 @@ verbose = args.verbose
 
 BPM = args.bpm
 beat = args.beat
+hop_beats = args.hop_beats
 if BPM is None and beat is not None or BPM is not None and beat is None:
     print("Please specify both BPM and beat if you are using metered divisions.")
     exit()
 frame_length_s = (4 * beat * 60 / BPM) if BPM is not None else args.frame_length_s
-hop_length_s = frame_length_s * (1/8) if BPM is not None else args.hop_length_s
+hop_length_s = (4 * hop_beats * 60 / BPM) if BPM is not None else args.hop_length_s
 sr = librosa.get_samplerate(audio_path)
 frame_length = math.ceil(frame_length_s * sr) if frame_length_s is not None else args.frame_length
 hop_length = math.ceil(hop_length_s * sr) if hop_length_s is not None else args.hop_length
