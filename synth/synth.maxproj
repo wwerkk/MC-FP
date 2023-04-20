@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3764762183,
+	"modificationdate" : 3764866002,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -175,6 +175,26 @@
 				}
 
 			}
+,
+			"colllins-16th_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/colllins-16th",
+					"projectrelativepath" : "../models/colllins-16th"
+				}
+
+			}
+,
+			"colllins-16th_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/colllins-16th",
+					"projectrelativepath" : "../models/colllins-16th"
+				}
+
+			}
 
 		}
 ,
@@ -225,6 +245,16 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
 					"projectrelativepath" : "../models/cut"
+				}
+
+			}
+,
+			"colllins-16th.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/colllins-16th",
+					"projectrelativepath" : "../models/colllins-16th"
 				}
 
 			}
