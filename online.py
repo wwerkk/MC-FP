@@ -1,61 +1,24 @@
+## TODO: cleanup
+
+
 #import dependencies
 import numpy as np
 from keras.models import load_model
 import json
 import argparse
-
+import time
+import threading
 from pythonosc.dispatcher import Dispatcher
 from pythonosc import osc_server, udp_client
 
+lock = threading.Lock()
 # Parse arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
-
-args = parser.parse_args()
-if args.path is None:
-    print("Please specify path to model.")
-    exit()
-global path, name, model, preds
-path = args.path
-verbose = args.verbose
-
-print(f"Path: {path}")
-# Load model and necessary dictionaries
-print(f"Loading model...")
-if path[-1] == "/":
-    path = path[:-1]
-name = path.split("/")[-1]
-path = path + "/"
-
-config_path = path + f"{name}_config.json"
-dict_path = path + f"{name}_frames.json"
-features_path = path + f"{name}_features.json"
-model_path = path + f"{name}.keras"
-
-config = json.load(open(config_path))
-filename = config['filename']
-sr = config['sr']
-n_classes = config['n_classes']
-onset_detection = config['onset_detection']
-frame_length = config['frame_length']
-hop_length = config['hop_length']
-block_length = config['block_length']
-if verbose:
-    print(f"Config loaded.")
-    for key, value in config.items():
-        print(f"{key}: {value}")
-labelled_frames = json.load(open(dict_path))
-if verbose:
-    print(f"Labelled frames loaded.")
-# encoded_features = json.load(open(features_path))
-# if verbose:  
-    # print(f"Encoded features loaded.")
-model = load_model(model_path)
-if verbose:  
-    print(f"Model loaded.")
-    model.summary()
-print(f"All loaded successfully.")
+parser.add_argument("-sl", "--sequence_length", type=int, default=16)
+parser.add_argument("-t", "--temperature", type=float, default=1.0)
+parser.add_argument("--prompt", type=str, default="0")
 
 # Function to sample from generated predictions
 # adapted from wandb character generation code
@@ -73,7 +36,6 @@ def sample(preds, temperature=1.0):
 def generate(sequence_length=4, temperature=1.0, prompt=[]):
     if temperature <= 0:
         temperature = 0.01
-    if len(prompt) > 0:
         encoded_prompt = []
         for label in prompt:
             encoded_label = np.eye(n_classes)[label].astype(bool).tolist() # this doesn't actually encode the prompt
@@ -105,7 +67,7 @@ def generate(sequence_length=4, temperature=1.0, prompt=[]):
     print("Temperature:\n", temperature)
     seq = np.array([seq])
     for i in range(sequence_length):
-        preds = model.predict(seq, verbose=0)
+        preds = model.predict(seq, verbose=0, workers=workers, use_multiprocessing=use_multiprocessing)
         # print(preds)
         p_label = sample(preds[0], temperature)
         encoded_pred = np.eye(n_classes)[p_label].astype(bool) # encode the predicted label
@@ -121,71 +83,151 @@ def generate(sequence_length=4, temperature=1.0, prompt=[]):
     g_ints = np.argmax(seq[0], axis=1)
     return g_ints[init_seq_len:]
 
-def handle_i(unused_addr, args, msg):
-  print(f"[{args[0]}] ~ {msg}")
-  if msg == "ping":
-    client.send_message("/i/", "pong")
+def gen_thread():
+    global prompt
+    print("Starting generation thread with prompt: ", prompt)
+    while True:
+        with lock:
+            prompt = list(map(int, prompt))
+        # print("Prompt: ", prompt)
+        print("Generating sequence...")
+        # Generate token sequence
+        seq = generate(sequence_length=sequence_length, temperature=temperature)
+        seq = seq.tolist()
+        with lock:
+            prompt.extend(seq)
+        print(f"Sequence length: {len(prompt)}")
+        if len(prompt) > n_classes:
+            with lock:
+                prompt = prompt[-n_classes:]
+            print("Prompt trimmed to length: ", len(prompt))
+        # print("Generated sequence so far:")
+        # print(prompt)
+        client.send_message("/generated/", seq)
 
 def handle_g(unused_addr, args, msg):
+    global sequence_length, temperature, prompt
+    print(msg)
     msg = msg.split(" ")
-    # print(msg)
-    sequence_length = int(msg[0])
-    temperature = float(msg[1])
-    prompt = msg[2:]
-    prompt = list(map(int, prompt))
-    print("Prompt: ", prompt)
-    print("Generating sequence...")
-    # Generate token sequence
-    seq = generate(sequence_length=sequence_length, temperature=temperature, prompt=prompt)
-    seq = seq.tolist()
-    print("Generated sequence:")
-    print(seq)
-    client.send_message("/generate/", seq)
-    print("Predictions sent.")
+    with lock:
+        sequence_length = int(msg[0])
+        temperature = float(msg[1])
+        if len(msg) > 2: # if a new prompt is given, use it to restart the state
+                prompt = msg[2:]
+                prompt = list(map(int, prompt))
+    print(f"Sequence length changed to: {sequence_length}")
+    print(f"Temperature changed to: {temperature}")
+    print(f"Started generation with new parameters and prompt: {prompt}")
 
-def handle_m(unused_addr, args, msg):
-    print(f"[{args[0]}] ~ {msg}")
-    print("Loading model: ", msg)
-    name = msg
-    path = f"models/{name}/"
+# def handle_m(unused_addr, args, msg):
+#     global name, path, config, n_classes, model, prompt
+#     print(f"[{args[0]}] ~ {msg}")
+#     print("Loading model: ", msg)
+#     with lock:
+#         name = msg
+#         path = f"models/{name}/"
 
-    config_path = path + f"{name}_config.json"
-    dict_path = path + f"{name}_frames.json"
-    features_path = path + f"{name}_features.json"
-    model_path = path + f"{name}.keras"
+#     config_path = path + f"{name}_config.json"
+#     dict_path = path + f"{name}_frames.json"
+#     features_path = path + f"{name}_features.json"
+#     model_path = path + f"{name}.keras"
 
-    config = json.load(open(config_path))
-    filename = config['filename']
-    sr = config['sr']
-    n_classes = config['n_classes']
-    onset_detection = config['onset_detection']
-    frame_length = config['frame_length']
-    hop_length = config['hop_length']
-    block_length = config['block_length']
-    if verbose:
-        print(f"Config loaded.")
-        for key, value in config.items():
-            print(f"{key}: {value}")
-    labelled_frames = json.load(open(dict_path))
-    if verbose:
-        print(f"Labelled frames loaded.")
-    # encoded_features = json.load(open(features_path))
-    # if verbose:  
-        # print(f"Encoded features loaded.")
-    model = load_model(model_path)
-    if verbose:  
-        print(f"Model loaded.")
-        model.summary()
-    print(f"All loaded successfully.")
+#     with lock:
+#         config = json.load(open(config_path))
+#         n_classes = config['n_classes']
+#         prompt = [0]
+#         model = load_model(model_path)
+#     if verbose:
+#         print(f"Config loaded.")
+#         for key, value in config.items():
+#             print(f"{key}: {value}")
+#         print(f"Model loaded.")
+#         model.summary()
+#     print(f"All loaded successfully.")
 
-if __name__ == "__main__":
+def osc_thread():
+    print("Starting OSC thread...")
     # Set up OSC server and client
-    client = udp_client.SimpleUDPClient("127.0.0.1", 9999)
     dispatcher = Dispatcher()
-    dispatcher.map("/i/", handle_i, "i")
     dispatcher.map("/g/", handle_g, "g")
-    dispatcher.map("/m/", handle_m, "m")
+    # dispatcher.map("/m/", handle_m, "m")
     server = osc_server.ThreadingOSCUDPServer(
-        ("127.0.0.1", 8888), dispatcher)
+        ("127.0.0.1", server_port), dispatcher)
     print("Serving on {}".format(server.server_address))
     server.serve_forever()
+
+global path, model, n_classes, sequence_length, temperature, prompt
+global verbose
+global client, server_port, client_port, workers, use_multiprocessing
+
+args = parser.parse_args()
+if args.path is None:
+    print("Please specify path to model.")
+    exit()
+path = args.path
+verbose = args.verbose
+
+print(f"Path: {path}")
+# Load model and necessary dictionaries
+print(f"Loading model...")
+if path[-1] == "/":
+    with lock:
+        path = path[:-1]
+name = path.split("/")[-1]
+with lock:
+    path = path + "/"
+    verbose = False
+    n_classes = 256
+    sequence_length = 32
+    temperature = 1.0
+    server_port = 8888
+    client_port = 9999
+    workers = 4
+    use_multiprocessing = True
+    prompt = [0]
+print(f"Path: {path}")
+# Load model and necessary dictionaries
+print(f"Loading model...")
+if path[-1] == "/":
+    with lock:
+        path = path[:-1]
+name = path.split("/")[-1]
+with lock:
+    path = path + "/"
+
+config_path = path + f"{name}_config.json"
+dict_path = path + f"{name}_frames.json"
+features_path = path + f"{name}_features.json"
+model_path = path + f"{name}.keras"
+
+config = json.load(open(config_path))
+filename = config['filename']
+sr = config['sr']
+n_classes = config['n_classes']
+onset_detection = config['onset_detection']
+frame_length = config['frame_length']
+hop_length = config['hop_length']
+block_length = config['block_length']
+if verbose:
+    print(f"Config loaded.")
+    for key, value in config.items():
+        print(f"{key}: {value}")
+labelled_frames = json.load(open(dict_path))
+if verbose:
+    print(f"Labelled frames loaded.")
+# encoded_features = json.load(open(features_path))
+# if verbose:  
+# print(f"Encoded features loaded.")
+with lock:
+    model = load_model(model_path)
+model.summary()
+print(f"All loaded successfully.")
+
+# Set up OSC client
+client = udp_client.SimpleUDPClient("127.0.0.1", client_port)
+
+# Start threads
+osc_thread = threading.Thread(target=osc_thread)
+osc_thread.start()
+gen_thread = threading.Thread(target=gen_thread)
+gen_thread.start()
