@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3764158695,
+	"modificationdate" : 3764762183,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -48,6 +48,30 @@
 				}
 
 			}
+,
+			"collins.mp3" : 			{
+				"kind" : "audiofile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
+					"projectrelativepath" : "../audio-data"
+				}
+
+			}
+,
+			"cut.mp3" : 			{
+				"kind" : "audiofile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
+					"projectrelativepath" : "../audio-data"
+				}
+
+			}
+
+		}
+,
+		"code" : 		{
 
 		}
 ,
@@ -111,6 +135,46 @@
 				}
 
 			}
+,
+			"collins-8th_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-8th",
+					"projectrelativepath" : "../models/collins-8th"
+				}
+
+			}
+,
+			"collins-8th_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-8th",
+					"projectrelativepath" : "../models/collins-8th"
+				}
+
+			}
+,
+			"cut_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
+					"projectrelativepath" : "../models/cut"
+				}
+
+			}
+,
+			"cut_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
+					"projectrelativepath" : "../models/cut"
+				}
+
+			}
 
 		}
 ,
@@ -141,6 +205,26 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/pulsex",
 					"projectrelativepath" : "../models/pulsex"
+				}
+
+			}
+,
+			"collins-8th.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-8th",
+					"projectrelativepath" : "../models/collins-8th"
+				}
+
+			}
+,
+			"cut.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
+					"projectrelativepath" : "../models/cut"
 				}
 
 			}

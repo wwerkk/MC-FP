@@ -16,6 +16,7 @@ args = parser.parse_args()
 if args.path is None:
     print("Please specify path to model.")
     exit()
+global path, name, model, preds
 path = args.path
 verbose = args.verbose
 
@@ -142,13 +143,49 @@ def handle_g(unused_addr, args, msg):
     client.send_message("/generate/", seq)
     print("Predictions sent.")
 
+def handle_m(unused_addr, args, msg):
+    print(f"[{args[0]}] ~ {msg}")
+    print("Loading model: ", msg)
+    name = msg
+    path = f"models/{name}/"
+
+    config_path = path + f"{name}_config.json"
+    dict_path = path + f"{name}_frames.json"
+    features_path = path + f"{name}_features.json"
+    model_path = path + f"{name}.keras"
+
+    config = json.load(open(config_path))
+    filename = config['filename']
+    sr = config['sr']
+    n_classes = config['n_classes']
+    onset_detection = config['onset_detection']
+    frame_length = config['frame_length']
+    hop_length = config['hop_length']
+    block_length = config['block_length']
+    if verbose:
+        print(f"Config loaded.")
+        for key, value in config.items():
+            print(f"{key}: {value}")
+    labelled_frames = json.load(open(dict_path))
+    if verbose:
+        print(f"Labelled frames loaded.")
+    # encoded_features = json.load(open(features_path))
+    # if verbose:  
+        # print(f"Encoded features loaded.")
+    model = load_model(model_path)
+    if verbose:  
+        print(f"Model loaded.")
+        model.summary()
+    print(f"All loaded successfully.")
+
 if __name__ == "__main__":
     # Set up OSC server and client
-    client = udp_client.SimpleUDPClient("127.0.0.1", 5555)
+    client = udp_client.SimpleUDPClient("127.0.0.1", 9999)
     dispatcher = Dispatcher()
     dispatcher.map("/i/", handle_i, "i")
     dispatcher.map("/g/", handle_g, "g")
+    dispatcher.map("/m/", handle_m, "m")
     server = osc_server.ThreadingOSCUDPServer(
-        ("127.0.0.1", 4444), dispatcher)
+        ("127.0.0.1", 8888), dispatcher)
     print("Serving on {}".format(server.server_address))
     server.serve_forever()
