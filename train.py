@@ -169,7 +169,7 @@ model = Model(inputs=inputs, outputs=outputs)
 model._name = name
 model.compile(
     loss='sparse_categorical_crossentropy', # since we are using integer labels
-    optimizer="rmsprop",
+    optimizer="adam",
     metrics=['accuracy']
     )
 model.summary()

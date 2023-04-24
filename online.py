@@ -12,7 +12,7 @@ from pythonosc.dispatcher import Dispatcher
 from pythonosc import osc_server, udp_client
 
 lock = threading.Lock()
-# Parse arguments
+# Parse rguments
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
