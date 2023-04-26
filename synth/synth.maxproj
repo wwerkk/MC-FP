@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3765190464,
+	"modificationdate" : 3765313080,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -12,8 +12,18 @@
 		"patchers" : 		{
 			"synth.maxpat" : 			{
 				"kind" : "patcher",
+				"local" : 1
+			}
+,
+			"synth-gen.maxpat" : 			{
+				"kind" : "patcher",
 				"local" : 1,
 				"toplevel" : 1
+			}
+,
+			"gen_test.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
 			}
 
 		}
@@ -180,8 +190,8 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/colllins-16th",
-					"projectrelativepath" : "../models/colllins-16th"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
+					"projectrelativepath" : "../models/cut"
 				}
 
 			}
@@ -190,8 +200,8 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/colllins-16th",
-					"projectrelativepath" : "../models/colllins-16th"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
+					"projectrelativepath" : "../models/cut"
 				}
 
 			}
@@ -212,6 +222,26 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-16th",
 					"projectrelativepath" : "../models/collins-16th"
+				}
+
+			}
+,
+			"trebles-8th_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
+					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
+				}
+
+			}
+,
+			"trebles-8th_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
+					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
 				}
 
 			}
@@ -273,8 +303,8 @@
 				"kind" : "file",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/colllins-16th",
-					"projectrelativepath" : "../models/colllins-16th"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
+					"projectrelativepath" : "../models/cut"
 				}
 
 			}
@@ -285,6 +315,16 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-16th",
 					"projectrelativepath" : "../models/collins-16th"
+				}
+
+			}
+,
+			"trebles-8th.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
+					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
 				}
 
 			}
