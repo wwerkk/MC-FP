@@ -179,7 +179,8 @@ model.fit(
     encoded_targets,
     batch_size=batch_size,
     epochs=epochs,
-    verbose=verbose
+    verbose=verbose,
+    validation_split=0.2
 )
 
 path = Path(directory + "/models/" + name)
