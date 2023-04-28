@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3765313080,
+	"modificationdate" : 3765560192,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -40,6 +40,26 @@
 			}
 ,
 			"trebles.mp3" : 			{
+				"kind" : "audiofile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
+					"projectrelativepath" : "../audio-data"
+				}
+
+			}
+,
+			"drumloop.mp3" : 			{
+				"kind" : "audiofile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
+					"projectrelativepath" : "../audio-data"
+				}
+
+			}
+,
+			"sweep.mp3" : 			{
 				"kind" : "audiofile",
 				"local" : 1,
 				"singleton" : 				{
@@ -245,6 +265,46 @@
 				}
 
 			}
+,
+			"sweep_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/sweep",
+					"projectrelativepath" : "../../MC-FP-umap/models/sweep"
+				}
+
+			}
+,
+			"sweep_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/sweep",
+					"projectrelativepath" : "../../MC-FP-umap/models/sweep"
+				}
+
+			}
+,
+			"drumloop_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/drumloop",
+					"projectrelativepath" : "../../MC-FP-umap/models/drumloop"
+				}
+
+			}
+,
+			"drumloop_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/drumloop",
+					"projectrelativepath" : "../../MC-FP-umap/models/drumloop"
+				}
+
+			}
 
 		}
 ,
@@ -325,6 +385,26 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
 					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
+				}
+
+			}
+,
+			"sweep.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/sweep",
+					"projectrelativepath" : "../../MC-FP-umap/models/sweep"
+				}
+
+			}
+,
+			"drumloop.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/drumloop",
+					"projectrelativepath" : "../../MC-FP-umap/models/drumloop"
 				}
 
 			}
