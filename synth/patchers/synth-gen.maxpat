@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 491.0, 87.0, 1155.0, 874.0 ],
+		"rect" : [ 253.0, 87.0, 1155.0, 874.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -261,7 +261,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 11.5, 395.220943331718445, 38.0, 62.0 ],
-					"text" : "28021 28251"
+					"text" : "83356 83521"
 				}
 
 			}
@@ -414,8 +414,8 @@
 									"numinlets" : 1,
 									"numoutlets" : 2,
 									"outlettype" : [ "", "int" ],
-									"patching_rect" : [ 103.618549942970276, 107.2568359375, 132.0, 22.0 ],
-									"text" : "mc.voiceallocator~ 128"
+									"patching_rect" : [ 103.618549942970276, 107.2568359375, 182.0, 22.0 ],
+									"text" : "mc.voiceallocator~ 128 @steal 1"
 								}
 
 							}
@@ -764,7 +764,7 @@
 						"parameter_mappable" : 0,
 						"range" : 240,
 						"showeditor" : 0,
-						"size" : 3
+						"size" : 127
 					}
 ,
 					"showeditor" : 0,
@@ -924,11 +924,11 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 914.515512824058533, 500.0, 89.0, 102.0 ],
+					"patching_rect" : [ 914.515512824058533, 500.0, 92.0, 102.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 6,
-					"presentation_rect" : [ 524.145140824494547, 322.332595467567444, 99.0, 89.0 ],
-					"text" : "0 70 17 118 1 5 87 71 5 86 22 13 97 10 83 50 32 54 27 18 11 75 2 23 27 51 42 71 41 83 1 17"
+					"presentation_rect" : [ 524.145140824494547, 322.332595467567444, 102.0, 89.0 ],
+					"text" : "44 58 8 35 60 60 35 10 42 5 60 60 4 47 35 58 47 35 58 49 35 60 24 33 17 58 55 42 10 39 40 26"
 				}
 
 			}
@@ -2545,7 +2545,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 34.0, 543.0, 50.0, 22.0 ],
-									"text" : "34"
+									"text" : "16"
 								}
 
 							}
@@ -3070,7 +3070,7 @@
 														"parameter_mappable" : 0,
 														"range" : 240,
 														"showeditor" : 0,
-														"size" : 3
+														"size" : 127
 													}
 ,
 													"showeditor" : 0,
@@ -3941,7 +3941,7 @@
 														"parameter_mappable" : 0,
 														"range" : 240,
 														"showeditor" : 0,
-														"size" : 3
+														"size" : 127
 													}
 ,
 													"showeditor" : 0,
@@ -5768,7 +5768,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 280.0, 296.69970703125, 118.0, 22.0 ],
-									"text" : "collins.mp3"
+									"text" : "drumloop2.mp3"
 								}
 
 							}
@@ -6384,7 +6384,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-19", 1 ],
-					"midpoints" : [ 1003.348844528198242, 439.860471665859222, 994.015512824058533, 439.860471665859222 ],
+					"midpoints" : [ 1003.348844528198242, 439.860471665859222, 997.015512824058533, 439.860471665859222 ],
 					"order" : 3,
 					"source" : [ "obj-143", 0 ]
 				}
