@@ -1,1 +1,1 @@
-{"filename": "collins.mp3", "sr": 44100, "BPM": 167, "beat": 0.125, "n_classes": 128, "onset_detection": false, "hop_length": 3962, "frame_length": 7923, "block_length": 1}
+{"filename": "collins.mp3", "sr": 44100, "BPM": 167, "beat": 0.125, "n_classes": 64, "maxlen": 256, "onset_detection": false, "hop_length": 7923, "frame_length": 7923, "block_length": 1}

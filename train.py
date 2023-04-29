@@ -27,7 +27,7 @@ parser.add_argument("-hls", "--hop_length_s", type=float, default=None)
 parser.add_argument("-bpm", "--bpm", type=int, default=None)
 parser.add_argument("-bt", "--beat", type=float, default=None)
 parser.add_argument("-hb", "--hop_beats", type=float, default=None)
-parser.add_argument("-nc", "--n_classes", type=int, default=256)
+parser.add_argument("-nc", "--n_classes", type=int, default=64)
 parser.add_argument("-e", "--epochs", type=int, default=3)
 parser.add_argument("-bs", "--batch_size", type=int, default=64)
 parser.add_argument("-ml", "--maxlen", type=int, default=256)
@@ -93,7 +93,6 @@ def extract_features(y, sr):
         mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
     else:
         mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
-    
     m_mfccs = np.median(mfccs[1:], axis=1)
     if m_mfccs.size == 0:
         print("Empty frame!")
@@ -113,7 +112,7 @@ print(f"Number of blocks: {len(stream)}")
 # extract features from each block in audio stream
 features = np.array([extract_features(block, sr) for block in stream.new()])
 # features_scaled = features
-features_scaled = preprocessing.scale(features, axis=0)
+features_scaled = preprocessing.scale(features, axis=0) # should it be axis 0 then not 1??
 if verbose:
     # print(features[0])
     print(features.shape)
@@ -159,8 +158,8 @@ for i in range(0, len(labels) - maxlen, step):
 # x_ = np.array(features)
 # y_ = np.array(targets)
 # one-hot encode features and targets
-x_ = to_categorical(x, dtype ="bool")
-y_ = to_categorical(y, dtype ="bool")
+x_ = to_categorical(x, dtype ="bool", num_classes=n_classes)
+y_ = to_categorical(y, dtype ="bool", num_classes=n_classes)
 # sanity check
 if verbose:
     print(x_.shape)
@@ -168,7 +167,6 @@ if verbose:
 
 # adapted from code by Lukas Biewald
 # https://github.com/lukas/ml-class/blob/master/projects/7-text-generation/char-gen.py
-
 inputs = Input(shape=(maxlen, n_labels))
 x = GRU(hidden_units)(inputs)
 outputs = Dense(n_labels, activation='softmax')(x)
