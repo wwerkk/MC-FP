@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 192.0, 133.0, 1063.0, 677.0 ],
+		"rect" : [ 34.0, 133.0, 1221.0, 827.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -114,7 +114,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 296.0, 343.0, 248.0, 22.0 ],
-					"text" : "peek window @interp linear @index samples"
+					"text" : "peek window @index samples @interp linear"
 				}
 
 			}
@@ -162,7 +162,7 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 31.5, 287.0, 264.0, 22.0 ],
-					"text" : "peek source 2 0 @interp linear @index samples"
+					"text" : "peek source 2 0 @index samples @interp linear"
 				}
 
 			}
