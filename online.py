@@ -19,7 +19,7 @@ parser.add_argument("-p", "--path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
 parser.add_argument("-sl", "--sequence_length", type=int, default=16)
 parser.add_argument("-t", "--temperature", type=float, default=0.0)
-parser.add_argument("--prompt", type=str, default="0123")
+parser.add_argument("--prompt", type=str, default="")
 parser.add_argument("-w", "--workers", type=int, default=2)
 
 # from character generation code tutorial by Lukas Biewald
@@ -37,6 +37,7 @@ def sample(preds, temperature=1.0):
 
 # Generate output
 def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose=0):
+    print("Read prompt: ", prompt)
     # generate a sequence of given length       
     if len(prompt) == 0:
         # if it's there's no prompt, use an array of zeroes
@@ -50,7 +51,7 @@ def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose
         # if it's too long, then trim it
         prompt = prompt[-maxlen:]
         print(f"Prompt too long, using {maxlen} last elements: ")
-    prompt_ = to_categorical(prompt, num_classes=4)
+    prompt_ = to_categorical(prompt, num_classes=n_classes)
     prompt_ = np.array([prompt_])
     
     seq = []
@@ -62,7 +63,7 @@ def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose
         # add sampled label to sequence
         seq.extend([int(p_label)])
         # one-hot encode sampled label
-        p_label_ = to_categorical(p_label, num_classes=4)
+        p_label_ = to_categorical(p_label, num_classes=n_classes)
         p_label_ = np.array([[p_label_]])
         # append encoded label to the prompt for next prediction
         prompt_ = np.append(prompt_, p_label_, axis=1)
@@ -107,7 +108,7 @@ def osc_thread():
     print("Serving on {}".format(server.server_address))
     server.serve_forever()
 
-global path, model, n_classes, sequence_length, temperature, prompt
+global path, model, n_classes, maxlen, sequence_length, temperature, prompt
 global verbose
 global client, server_port, client_port, workers, use_multiprocessing
 
@@ -155,6 +156,7 @@ filename = config['filename']
 sr = config['sr']
 n_classes = config['n_classes']
 maxlen = config['maxlen']
+print("maxlen: ", maxlen)
 onset_detection = config['onset_detection']
 frame_length = config['frame_length']
 hop_length = config['hop_length']
