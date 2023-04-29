@@ -77,17 +77,17 @@ stream = Streamer(audio_path, block_length, frame_length, hop_length)
 
 # helper function to extract features from audio block
 def extract_features(y, sr):
-    # if y.size >= 2048:  
-    #     mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
-    # else:
-    #     mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
-    # m_mfccs = np.median(mfccs[1:], axis=1)
-    # if m_mfccs.size == 0 and verbose:
-    #     print("Empty frame!")
-    # return m_mfccs
-    zcr = [librosa.zero_crossings(y).sum()]
-    energy = [scipy.linalg.norm(y)]  
-    features = np.concatenate((zcr, energy))
+    if y.size >= 2048:  
+        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
+    else:
+        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
+    m_mfccs = np.median(mfccs[1:], axis=1)
+    if m_mfccs.size == 0 and verbose:
+        print("Empty frame!")
+    return m_mfccs
+    # zcr = [librosa.zero_crossings(y).sum()]
+    # energy = [scipy.linalg.norm(y)]  
+    # features = np.concatenate((zcr, energy))
     return features
     
 
@@ -100,7 +100,7 @@ print(f"Number of blocks: {len(stream)}")
 
 # extract features from each block in audio stream
 features = np.array([extract_features(block, sr) for block in stream.new()])
-features_scaled = preprocessing.scale(features, axis=1)
+features_scaled = preprocessing.scale(features, axis=0)
 if verbose:
     # print(features[0])
     print(features.shape)
@@ -168,7 +168,7 @@ outputs = Dense(n_labels, activation='softmax', dtype="float32")(x)
 model = Model(inputs=inputs, outputs=outputs)
 model._name = name
 model.compile(
-    loss='sparse_categorical_crossentropy', # since we are using integer labels
+    loss='categorical_crossentropy', # since we are using one-hot encoded labels
     optimizer="adam",
     metrics=['accuracy']
     )
