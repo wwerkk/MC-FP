@@ -12,7 +12,7 @@
 		"classnamespace" : "box",
 		"rect" : [ 253.0, 87.0, 1155.0, 874.0 ],
 		"bglocked" : 0,
-		"openinpresentation" : 0,
+		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
 		"default_fontface" : 0,
 		"default_fontname" : "Arial",
@@ -261,7 +261,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 11.5, 395.220943331718445, 38.0, 62.0 ],
-					"text" : "83356 83521"
+					"text" : "98067 98150"
 				}
 
 			}
@@ -764,7 +764,7 @@
 						"parameter_mappable" : 0,
 						"range" : 240,
 						"showeditor" : 0,
-						"size" : 127
+						"size" : 63
 					}
 ,
 					"showeditor" : 0,
@@ -919,16 +919,16 @@
 				"box" : 				{
 					"id" : "obj-19",
 					"ignoreclick" : 1,
-					"linecount" : 7,
+					"linecount" : 26,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 914.515512824058533, 500.0, 92.0, 102.0 ],
+					"patching_rect" : [ 914.515512824058533, 500.0, 92.0, 357.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 6,
-					"presentation_rect" : [ 524.145140824494547, 322.332595467567444, 102.0, 89.0 ],
-					"text" : "44 58 8 35 60 60 35 10 42 5 60 60 4 47 35 58 47 35 58 49 35 60 24 33 17 58 55 42 10 39 40 26"
+					"presentation_linecount" : 25,
+					"presentation_rect" : [ 524.145140824494547, 322.332595467567444, 102.0, 344.0 ],
+					"text" : "57 29 8 29 45 15 51 34 13 13 36 23 34 57 34 34 58 33 20 47 52 12 37 9 46 44 21 37 54 21 21 63 36 31 34 60 26 33 28 52 60 63 57 15 49 21 61 4 54 46 36 12 45 32 21 47 21 14 34 34 21 34 37 45 57 57 1 50 35 35 29 36 32 56 4 35 51 56 47 21 63 28 35 17 37 41 17 33 49 56 62 34 59 33 10 35 23 56 29 30 33 18 33 14 34 34 17 47 7 58 33 21 43 61 40 56 47 58 18 58 29 21 33 49 41 57 30 46"
 				}
 
 			}
@@ -2545,7 +2545,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 34.0, 543.0, 50.0, 22.0 ],
-									"text" : "16"
+									"text" : "332"
 								}
 
 							}
@@ -3070,7 +3070,7 @@
 														"parameter_mappable" : 0,
 														"range" : 240,
 														"showeditor" : 0,
-														"size" : 127
+														"size" : 63
 													}
 ,
 													"showeditor" : 0,
@@ -3941,7 +3941,7 @@
 														"parameter_mappable" : 0,
 														"range" : 240,
 														"showeditor" : 0,
-														"size" : 127
+														"size" : 63
 													}
 ,
 													"showeditor" : 0,
@@ -5768,7 +5768,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 280.0, 296.69970703125, 118.0, 22.0 ],
-									"text" : "drumloop2.mp3"
+									"text" : "collins.mp3"
 								}
 
 							}
