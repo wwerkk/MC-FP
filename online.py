@@ -46,8 +46,8 @@ def generate(sequence_length=4, temperature=1.0, prompt=[]):
         seq = np.array(encoded_prompt)
         if verbose:
             print("Encoded prompt shape: ", seq.shape)
-        if seq.shape[0] < n_classes:
-            seq = np.pad(seq, ((0, n_classes - seq.shape[0]), (0, 0)), 'constant')
+        if seq.shape[0] < maxlen:
+            seq = np.pad(seq, ((0, maxlen - seq.shape[0]), (0, 0)), 'constant')
             if verbose:
                 print("Padded to shape: ", seq.shape)
         # print("SEQ: ", seq.shape)
@@ -58,7 +58,7 @@ def generate(sequence_length=4, temperature=1.0, prompt=[]):
         if verbose:
             print("Random token: ", seq)
             print("Random token shape: ", seq.shape)
-        seq = np.pad(seq, ((0, n_classes - seq.shape[0]), (0, 0)), 'constant')
+        seq = np.pad(seq, ((0, maxlen - seq.shape[0]), (0, 0)), 'constant')
     print(f"Generating sequence of length: {sequence_length}")
     if verbose:
         print("Prompt:", prompt if (len(prompt) > 0) else "random")
@@ -98,9 +98,9 @@ def gen_thread():
         with lock:
             prompt.extend(seq)
         print(f"Sequence length: {len(prompt)}")
-        if len(prompt) > n_classes:
+        if len(prompt) > maxlen:
             with lock:
-                prompt = prompt[-n_classes:]
+                prompt = prompt[-maxlen:]
             print("Prompt trimmed to length: ", len(prompt))
         # print("Generated sequence so far:")
         # print(prompt)
@@ -178,7 +178,6 @@ name = path.split("/")[-1]
 with lock:
     path = path + "/"
     verbose = False
-    n_classes = 256
     sequence_length = 32
     temperature = 1.0
     server_port = 8888
@@ -205,6 +204,7 @@ config = json.load(open(config_path))
 filename = config['filename']
 sr = config['sr']
 n_classes = config['n_classes']
+maxlen = config['maxlen']
 onset_detection = config['onset_detection']
 frame_length = config['frame_length']
 hop_length = config['hop_length']

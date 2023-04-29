@@ -30,8 +30,8 @@ parser.add_argument("-hb", "--hop_beats", type=float, default=None)
 parser.add_argument("-nc", "--n_classes", type=int, default=256)
 parser.add_argument("-e", "--epochs", type=int, default=3)
 parser.add_argument("-bs", "--batch_size", type=int, default=64)
-# parser.add_argument("-ml", "--maxlen", type=int, default=256)
-parser.add_argument("-s", "--step", type=int, default=2)
+parser.add_argument("-ml", "--maxlen", type=int, default=256)
+parser.add_argument("-s", "--step", type=int, default=1)
 parser.add_argument("-hu", "--hidden_units", type=int, default=24)
 parser.add_argument("-w", "--workers", type=int, default=8)
 parser.add_argument("-n", "--name", type=str, default="newmodel") # model name
@@ -53,8 +53,7 @@ block_length = args.block_length
 n_classes = args.n_classes
 epochs = args.epochs
 batch_size = args.batch_size
-# maxlen = args.maxlen
-maxlen = n_classes
+maxlen = args.maxlen
 step = args.step
 hidden_units = args.hidden_units
 validation_split = args.validation_split
@@ -113,6 +112,7 @@ print(f"Number of blocks: {len(stream)}")
 
 # extract features from each block in audio stream
 features = np.array([extract_features(block, sr) for block in stream.new()])
+# features_scaled = features
 features_scaled = preprocessing.scale(features, axis=0)
 if verbose:
     # print(features[0])
@@ -151,16 +151,16 @@ if verbose:
 
 # build a subsequence for every <step> frames
 # and a corresponding label that follows it
-features = [] # these will be features
-targets = [] # these will be targets
+x = [] # these will be features
+y = [] # these will be targets
 for i in range(0, len(labels) - maxlen, step):
-    features.append(labels[i: i + maxlen])
-    targets.append(labels[i + maxlen])
+    x.append(labels[i: i + maxlen])
+    y.append(labels[i + maxlen])
 # x_ = np.array(features)
 # y_ = np.array(targets)
 # one-hot encode features and targets
-x_ = to_categorical(features, dtype ="bool")
-y_ = to_categorical(targets, dtype ="bool")
+x_ = to_categorical(x, dtype ="bool")
+y_ = to_categorical(y, dtype ="bool")
 # sanity check
 if verbose:
     print(x_.shape)
@@ -205,6 +205,7 @@ config["sr"] = sr
 config["BPM"] = BPM
 config["beat"] = beat
 config["n_classes"] = n_classes
+config["maxlen"] = maxlen
 config["onset_detection"] = False
 config["hop_length"] = hop_length
 config["frame_length"] = frame_length

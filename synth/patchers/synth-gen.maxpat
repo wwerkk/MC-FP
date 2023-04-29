@@ -40,13 +40,40 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-11",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 205.78300090679906, 298.361721694469452, 76.0, 47.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 205.515512824058533, 300.361721694469452, 144.0, 20.0 ],
+					"text" : "Last generated sequence"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 81.0, 435.0, 150.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 93.848844528198242, 372.924828290939331, 49.0, 20.0 ],
+					"text" : "[Space]"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-51",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 378.0, 558.0, 50.0, 22.0 ],
-					"text" : "20750"
+					"text" : "750"
 				}
 
 			}
@@ -96,7 +123,7 @@
 					"patching_rect" : [ 659.0, 306.0, 94.0, 20.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 27.848844528198242, 372.924828290939331, 57.0, 33.0 ],
+					"presentation_rect" : [ 27.848844528198242, 372.924828290939331, 64.0, 33.0 ],
 					"text" : "Playback  on/off"
 				}
 
@@ -177,7 +204,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 11.5, 395.220943331718445, 50.0, 35.0 ],
-					"text" : "10000 30750"
+					"text" : "750 1500"
 				}
 
 			}
@@ -660,13 +687,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-42",
-					"linecount" : 3,
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 7.5, 288.538464409652704, 50.0, 49.0 ],
-					"text" : "480000 1476000"
+					"patching_rect" : [ 7.5, 288.538464409652704, 52.0, 35.0 ],
+					"text" : "36000 72000"
 				}
 
 			}
@@ -718,7 +745,7 @@
 						"parameter_mappable" : 0,
 						"range" : 128,
 						"showeditor" : 0,
-						"size" : 109
+						"size" : 3
 					}
 ,
 					"showeditor" : 1,
@@ -749,10 +776,24 @@
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "", "" ],
-					"parameter_enable" : 0,
+					"parameter_enable" : 1,
 					"patching_rect" : [ 224.0, 907.5, 108.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 524.145140824494547, 170.0, 108.0, 22.0 ]
+					"presentation_rect" : [ 524.145140824494547, 170.0, 108.0, 22.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_enum" : [ "hanning", "gauss 1", "triangle", "expodec 3 2", "sinc 5" ],
+							"parameter_initial" : [ 0.0 ],
+							"parameter_initial_enable" : 1,
+							"parameter_longname" : "umenu[1]",
+							"parameter_mmax" : 4,
+							"parameter_shortname" : "umenu[1]",
+							"parameter_type" : 2
+						}
+
+					}
+,
+					"varname" : "umenu[1]"
 				}
 
 			}
@@ -762,8 +803,8 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 268.5, 954.5, 183.0, 22.0 ],
-					"text" : "vs.winfunc window 4096 gauss 1"
+					"patching_rect" : [ 268.5, 954.5, 194.0, 22.0 ],
+					"text" : "vs.winfunc window 4096 hanning 1"
 				}
 
 			}
@@ -856,13 +897,17 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-19",
-					"linecount" : 5,
+					"ignoreclick" : 1,
+					"linecount" : 23,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 914.515512824058533, 500.0, 82.0, 76.0 ],
-					"text" : "0 0 1 0 1 0 1 1 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0"
+					"patching_rect" : [ 914.515512824058533, 500.0, 82.0, 317.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 23,
+					"presentation_rect" : [ 205.515512824058533, 322.332595467567444, 82.0, 317.0 ],
+					"text" : "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 0 1 1 2 1 1 2 1 0 0 2 0 1 1 2 1 0 2 1 2 1 0 2 1 2 0 1 2"
 				}
 
 			}
@@ -2268,7 +2313,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 514.0, 91.0, 49.0, 33.0 ],
+					"patching_rect" : [ 514.0, 91.0, 52.0, 33.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 112.78300090679906, 148.0, 89.0, 20.0 ],
 					"text" : "Density (beats)"
@@ -2319,7 +2364,7 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-12",
-					"items" : [ "collins-16th", ",", "collins-8th", ",", "trebles", ",", "flux", ",", "pulsex", ",", "cut", ",", "sweep", ",", "drumloop" ],
+					"items" : [ "collins-16th", ",", "collins-8th", ",", "trebles", ",", "flux", ",", "pulsex", ",", "cut", ",", "sweep", ",", "drumloop", ",", "drumloop2" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -2330,11 +2375,11 @@
 					"presentation_rect" : [ 27.848844528198242, 50.300293000000011, 100.0, 22.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_enum" : [ "collins-16th", "collins-8th", "trebles", "flux", "pulsex", "cut", "sweep", "drumloop" ],
+							"parameter_enum" : [ "collins-16th", "collins-8th", "trebles", "flux", "pulsex", "cut", "sweep", "drumloop", "drumloop2" ],
 							"parameter_initial" : [ 3.0 ],
 							"parameter_initial_enable" : 1,
 							"parameter_longname" : "umenu",
-							"parameter_mmax" : 7,
+							"parameter_mmax" : 8,
 							"parameter_shortname" : "umenu",
 							"parameter_type" : 2
 						}
@@ -2951,7 +2996,7 @@
 														"parameter_mappable" : 0,
 														"range" : 128,
 														"showeditor" : 0,
-														"size" : 109
+														"size" : 3
 													}
 ,
 													"showeditor" : 0,
@@ -3780,7 +3825,7 @@
 														"parameter_mappable" : 0,
 														"range" : 128,
 														"showeditor" : 0,
-														"size" : 109
+														"size" : 3
 													}
 ,
 													"showeditor" : 0,
@@ -6399,6 +6444,7 @@
 			"obj-123" : [ "number[2]", "number[1]", 0 ],
 			"obj-151" : [ "Output", "Output", 0 ],
 			"obj-244" : [ "number", "number", 0 ],
+			"obj-28" : [ "umenu[1]", "umenu[1]", 0 ],
 			"parameterbanks" : 			{
 				"0" : 				{
 					"index" : 0,
