@@ -12,6 +12,7 @@ import json
 from numpyencoder import NumpyEncoder
 from sklearn import preprocessing, cluster
 from streamer import Streamer
+import scipy
 
 # parse arguments
 parser = argparse.ArgumentParser()
@@ -76,14 +77,18 @@ stream = Streamer(audio_path, block_length, frame_length, hop_length)
 
 # helper function to extract features from audio block
 def extract_features(y, sr):
-    if y.size >= 2048:  
-        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
-    else:
-        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
-    m_mfccs = np.median(mfccs, axis=1)
-    if m_mfccs.size == 0 and verbose:
-        print("Empty frame!")
-    return m_mfccs
+    # if y.size >= 2048:  
+    #     mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
+    # else:
+    #     mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
+    # m_mfccs = np.median(mfccs[1:], axis=1)
+    # if m_mfccs.size == 0 and verbose:
+    #     print("Empty frame!")
+    # return m_mfccs
+    zcr = [librosa.zero_crossings(y).sum()]
+    energy = [scipy.linalg.norm(y)]  
+    features = np.concatenate((zcr, energy))
+    return features
     
 
 print(f"Audio length: {stream.length}s, {stream.n_samples} samples")
@@ -103,11 +108,6 @@ if verbose:
     print(features_scaled.min(axis=0))
     print(features_scaled.max(axis=0))
     print(features_scaled[0]) # type: ignore
-if verbose:
-    plt.scatter(features_scaled[:,0], features_scaled[:,1]) # type: ignore
-    plt.xlabel('Zero Crossing Rate (scaled)')
-    plt.ylabel('Spectral Centroid (scaled)')   
-    plt.show()
 
 # cluster features
 # frames = [frame for frame in frames if frame.size != 0] # remove empty
