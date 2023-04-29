@@ -10,6 +10,7 @@ import time
 import threading
 from pythonosc.dispatcher import Dispatcher
 from pythonosc import osc_server, udp_client
+from keras.utils import to_categorical
 
 lock = threading.Lock()
 # Parse rguments
@@ -18,14 +19,15 @@ parser.add_argument("-p", "--path", type=str)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
 parser.add_argument("-sl", "--sequence_length", type=int, default=16)
 parser.add_argument("-t", "--temperature", type=float, default=0.0)
-parser.add_argument("--prompt", type=str, default="0")
+parser.add_argument("--prompt", type=str, default="0123")
 parser.add_argument("-w", "--workers", type=int, default=2)
 
-# Function to sample from generated predictions
-# adapted from wandb character generation code
+# from character generation code tutorial by Lukas Biewald
+# https://github.com/lukas/ml-class/blob/master/projects/7-text-generation/char-gen.py
 def sample(preds, temperature=1.0):
     # helper function to sample an index from a probability array
     preds = np.asarray(preds).astype('float64')
+    preds = preds[0]
     preds = np.log(preds) / temperature
     exp_preds = np.exp(preds)
     preds = exp_preds / np.sum(exp_preds)
@@ -34,76 +36,50 @@ def sample(preds, temperature=1.0):
     return np.argmax(probas)
 
 # Generate output
-def generate(sequence_length=4, temperature=1.0, prompt=[]):
-    if temperature <= 0:
-        temperature = 0.01
-        encoded_prompt = []
-        for label in prompt:
-            encoded_label = np.eye(n_classes)[label].astype(bool).tolist() # this doesn't actually encode the prompt
-            encoded_prompt.extend([encoded_label])
-            # print("Encoded prompt shape: ", np.array(encoded_prompt).shape)
-            # print("Encoded prompt: ", encoded_prompt)
-        seq = np.array(encoded_prompt)
-        if verbose:
-            print("Encoded prompt shape: ", seq.shape)
-        if seq.shape[0] < maxlen:
-            seq = np.pad(seq, ((0, maxlen - seq.shape[0]), (0, 0)), 'constant')
-            if verbose:
-                print("Padded to shape: ", seq.shape)
-        # print("SEQ: ", seq.shape)
-    # seq = np.array([random.choice(list(encoded_features))]) # prompt with random sequence of frames from original data
+def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose=0):
+    # generate a sequence of given length       
+    if len(prompt) == 0:
+        # if it's there's no prompt, use an array of zeroes
+        prompt = np.zeros((maxlen), dtype="uint8")
+        print(f"No prompt provided, using {maxlen} zeroes instead.")
+    elif len(prompt) < maxlen:
+        # if prompt is too short, pad it with zeroes from the left to match correct input shape
+        prompt = np.pad(prompt, (maxlen - len(prompt), 0), 'constant', constant_values=(0, 0))
+        print("Prompt too short, padded to length: ", maxlen)
+    elif len(prompt) > maxlen:
+        # if it's too long, then trim it
+        prompt = prompt[-maxlen:]
+        print(f"Prompt too long, using {maxlen} last elements: ")
+    prompt_ = to_categorical(prompt, num_classes=4)
+    prompt_ = np.array([prompt_])
+    
+    seq = []
+    for i in range(length):
+        # make prediction based on prompt
+        ps = model.predict(prompt_, verbose=verbose)
+        # sample from predictions
+        p_label = sample(ps, temperature)
+        # add sampled label to sequence
+        seq.extend([int(p_label)])
+        # one-hot encode sampled label
+        p_label_ = to_categorical(p_label, num_classes=4)
+        p_label_ = np.array([[p_label_]])
+        # append encoded label to the prompt for next prediction
+        prompt_ = np.append(prompt_, p_label_, axis=1)
+    if include_prompt:
+        prompt = np.append(prompt, seq)
+        return prompt
     else:
-        seq = np.eye(n_classes)[0].astype(bool) # prompt with token 0
-        seq = np.array([seq])
-        if verbose:
-            print("Random token: ", seq)
-            print("Random token shape: ", seq.shape)
-        seq = np.pad(seq, ((0, maxlen - seq.shape[0]), (0, 0)), 'constant')
-    print(f"Generating sequence of length: {sequence_length}")
-    if verbose:
-        print("Prompt:", prompt if (len(prompt) > 0) else "random")
-        print(f"Prompt sequence shape: {seq.shape}")
-        print(np.argmax(seq, axis=1))
-    init_seq_len = seq.shape[1]
-    print("Temperature:\n", temperature)
-    seq = np.array([seq])
-    for i in range(sequence_length):
-        preds = model.predict(seq, verbose=0, workers=workers, use_multiprocessing=use_multiprocessing)
-        # print(preds)
-        p_label = sample(preds[0], temperature)
-        encoded_pred = np.eye(n_classes)[p_label].astype(bool) # encode the predicted label
-        encoded_pred = np.array([[encoded_pred]])
-        # print("\nPrediction: ", encoded_pred.astype(int))
-        # print("\nPrediction: ", np.argmax(encoded_pred))
-        # print(seed.shape, encoded_pred.shape)
-        seq = np.concatenate((seq, encoded_pred), axis=1) # add the prediction to the sequence
-        # print(seq.astype(int))
-        # print("Predicted sequence:\n", seq.astype(int))
-        # print("\n", seq.shape)
-        # print("Predicted sequence:\n", seq.astype(int))
-    g_ints = np.argmax(seq[0], axis=1)
-    return g_ints[init_seq_len:]
+        return seq
 
 def gen_thread():
-    global prompt
-    print("Starting generation thread with prompt: ", prompt)
+    global prompt, seq
     while True:
-        with lock:
-            prompt = list(map(int, prompt))
-        # print("Prompt: ", prompt)
         print("Generating sequence...")
-        # Generate token sequence
-        seq = generate(sequence_length=sequence_length, temperature=temperature)
-        seq = seq.tolist()
         with lock:
-            prompt.extend(seq)
-        print(f"Sequence length: {len(prompt)}")
-        if len(prompt) > maxlen:
-            with lock:
-                prompt = prompt[-maxlen:]
-            print("Prompt trimmed to length: ", len(prompt))
-        # print("Generated sequence so far:")
-        # print(prompt)
+            seq = generate(prompt=prompt, length=sequence_length)
+            prompt.extend(seq) # add generated sequence to the prompt
+            prompt = prompt[-maxlen:] # take only last maxlen elements
         client.send_message("/generated/", seq)
 
 def handle_g(unused_addr, args, msg):
@@ -119,32 +95,6 @@ def handle_g(unused_addr, args, msg):
     print(f"Sequence length changed to: {sequence_length}")
     print(f"Temperature changed to: {temperature}")
     print(f"Started generation with new parameters and prompt: {prompt}")
-
-# def handle_m(unused_addr, args, msg):
-#     global name, path, config, n_classes, model, prompt
-#     print(f"[{args[0]}] ~ {msg}")
-#     print("Loading model: ", msg)
-#     with lock:
-#         name = msg
-#         path = f"models/{name}/"
-
-#     config_path = path + f"{name}_config.json"
-#     dict_path = path + f"{name}_frames.json"
-#     features_path = path + f"{name}_features.json"
-#     model_path = path + f"{name}.keras"
-
-#     with lock:
-#         config = json.load(open(config_path))
-#         n_classes = config['n_classes']
-#         prompt = [0]
-#         model = load_model(model_path)
-#     if verbose:
-#         print(f"Config loaded.")
-#         for key, value in config.items():
-#             print(f"{key}: {value}")
-#         print(f"Model loaded.")
-#         model.summary()
-#     print(f"All loaded successfully.")
 
 def osc_thread():
     print("Starting OSC thread...")
@@ -182,9 +132,9 @@ with lock:
     temperature = 1.0
     server_port = 8888
     client_port = 9999
-    workers = 4
-    use_multiprocessing = True
-    prompt = [0]
+    prompt = args.prompt
+    prompt = [int(i) for i in args.prompt]
+    print("Prompt: ", prompt)
 print(f"Path: {path}")
 # Load model and necessary dictionaries
 print(f"Loading model...")
