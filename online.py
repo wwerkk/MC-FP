@@ -25,7 +25,7 @@ parser.add_argument("-w", "--workers", type=int, default=2)
 # adapted from wandb character generation code
 def sample(preds, temperature=1.0):
     # helper function to sample an index from a probability array
-    preds = np.asarray(preds).astype('float64')[0]
+    preds = np.asarray(preds).astype('float64')
     preds = np.log(preds) / temperature
     exp_preds = np.exp(preds)
     preds = exp_preds / np.sum(exp_preds)

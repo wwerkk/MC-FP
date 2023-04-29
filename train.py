@@ -13,6 +13,8 @@ from numpyencoder import NumpyEncoder
 from sklearn import preprocessing, cluster
 from streamer import Streamer
 import scipy
+from keras.callbacks import EarlyStopping
+from keras.utils import to_categorical
 
 # parse arguments
 parser = argparse.ArgumentParser()
@@ -32,10 +34,10 @@ parser.add_argument("-bs", "--batch_size", type=int, default=64)
 parser.add_argument("-s", "--step", type=int, default=2)
 parser.add_argument("-hu", "--hidden_units", type=int, default=24)
 parser.add_argument("-w", "--workers", type=int, default=8)
-parser.add_argument("-k", "--k_fold", type=bool, default=False)
-parser.add_argument("-k_val", "--k_val", type=int, default=2)
 parser.add_argument("-n", "--name", type=str, default="newmodel") # model name
 parser.add_argument("-d", "--directory", type=str, default=".") # directory to save model
+parser.add_argument("-vs", "--validation_split", type=float, default=0.2)
+parser.add_argument("-pat", "--patience", type=int, default=15)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
 
 args = parser.parse_args()
@@ -55,9 +57,10 @@ batch_size = args.batch_size
 maxlen = n_classes
 step = args.step
 hidden_units = args.hidden_units
+validation_split = args.validation_split
 workers = args.workers
-k_fold_on = args.k_fold
-k = args.k_val
+patience = args.patience
+
 name = args.name
 directory = args.directory
 verbose = args.verbose
@@ -77,18 +80,28 @@ stream = Streamer(audio_path, block_length, frame_length, hop_length)
 
 # helper function to extract features from audio block
 def extract_features(y, sr):
+    zcr = [librosa.zero_crossings(y).sum()]
+    energy = [scipy.linalg.norm(y)]
+    spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
+    spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr)
+    spectral_flatness = librosa.feature.spectral_flatness(y=y)
+    spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+    m_centroid = np.median(spectral_centroid, axis=1)
+    m_bandwith = np.median(spectral_bandwith, axis=1)
+    m_flatness = np.median(spectral_flatness, axis=1)
+    m_rolloff = np.median(spectral_rolloff, axis=1)
     if y.size >= 2048:  
         mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
     else:
         mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
+    
     m_mfccs = np.median(mfccs[1:], axis=1)
-    if m_mfccs.size == 0 and verbose:
+    if m_mfccs.size == 0:
         print("Empty frame!")
-    return m_mfccs
-    # zcr = [librosa.zero_crossings(y).sum()]
-    # energy = [scipy.linalg.norm(y)]  
-    # features = np.concatenate((zcr, energy))
-    return features
+        return None
+    else:        
+        features = np.concatenate((zcr, energy, m_centroid, m_bandwith, m_flatness, m_rolloff, m_mfccs))
+        return features
     
 
 print(f"Audio length: {stream.length}s, {stream.n_samples} samples")
@@ -136,7 +149,6 @@ if verbose:
     print(len(labelled_frames[0])) # sanity check
     print(labelled_frames[0][0], labelled_frames[0][1]) # sanity check
 
-# One-hot encode
 # build a subsequence for every <step> frames
 # and a corresponding label that follows it
 features = [] # these will be features
@@ -144,29 +156,25 @@ targets = [] # these will be targets
 for i in range(0, len(labels) - maxlen, step):
     features.append(labels[i: i + maxlen])
     targets.append(labels[i + maxlen])
+# x_ = np.array(features)
+# y_ = np.array(targets)
 # one-hot encode features and targets
-# adapted from wandb character generation code referenced at the beginning of this notebook
-encoded_features = np.zeros((len(features), maxlen, n_labels), dtype=bool)
-encoded_targets = np.zeros((len(targets), n_labels), dtype=bool)
-for i, sequence in enumerate(features):
-    # print(i, sequence)
-    for t, label in enumerate(sequence):
-        encoded_features[i, t, label] = 1
-        # print(encoded_features[i, t])
-    encoded_targets[i, targets[i]] = 1
+x_ = to_categorical(features, dtype ="bool")
+y_ = to_categorical(targets, dtype ="bool")
 # sanity check
 if verbose:
-    print(encoded_features.shape)
-    print(encoded_targets.shape)
+    print(x_.shape)
+    print(y_.shape)
 
 # adapted from code by Lukas Biewald
 # https://github.com/lukas/ml-class/blob/master/projects/7-text-generation/char-gen.py
+
 inputs = Input(shape=(maxlen, n_labels))
-x = GRU(hidden_units, return_sequences=True)(inputs)
-# according to DLWP [13.2.1] softmax tends to be unstable in float16
-outputs = Dense(n_labels, activation='softmax', dtype="float32")(x)
+x = GRU(hidden_units)(inputs)
+outputs = Dense(n_labels, activation='softmax')(x)
 model = Model(inputs=inputs, outputs=outputs)
 model._name = name
+es = EarlyStopping(monitor='val_loss', patience=patience)
 model.compile(
     loss='categorical_crossentropy', # since we are using one-hot encoded labels
     optimizer="adam",
@@ -174,13 +182,14 @@ model.compile(
     )
 model.summary()
 
-model.fit(
-    encoded_features,
-    encoded_targets,
+history = model.fit(
+    x_,
+    y_,
     batch_size=batch_size,
     epochs=epochs,
     verbose=verbose,
-    validation_split=0.2
+    validation_split=0.2,
+    callbacks=[es]
 )
 
 path = Path(directory + "/models/" + name)
