@@ -113,8 +113,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 296.0, 343.0, 78.0, 22.0 ],
-					"text" : "peek window"
+					"patching_rect" : [ 296.0, 343.0, 248.0, 22.0 ],
+					"text" : "peek window @interp linear @index samples"
 				}
 
 			}
@@ -161,8 +161,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 31.5, 287.0, 94.0, 22.0 ],
-					"text" : "peek source 2 0"
+					"patching_rect" : [ 31.5, 287.0, 264.0, 22.0 ],
+					"text" : "peek source 2 0 @interp linear @index samples"
 				}
 
 			}
