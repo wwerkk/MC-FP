@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3765612805,
+	"modificationdate" : 3765730967,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -335,6 +335,26 @@
 				}
 
 			}
+,
+			"sweep2_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep2",
+					"projectrelativepath" : "../models/sweep2"
+				}
+
+			}
+,
+			"sweep2_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep2",
+					"projectrelativepath" : "../models/sweep2"
+				}
+
+			}
 
 		}
 ,
@@ -429,17 +449,32 @@
 
 			}
 ,
-			"drumloop.keras" : 			{
-				"kind" : "file",
-				"local" : 1
-			}
-,
 			"drumloop2.keras" : 			{
 				"kind" : "file",
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop2",
 					"projectrelativepath" : "../models/drumloop2"
+				}
+
+			}
+,
+			"drumloop.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop",
+					"projectrelativepath" : "../models/drumloop"
+				}
+
+			}
+,
+			"sweep2.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep2",
+					"projectrelativepath" : "../models/sweep2"
 				}
 
 			}
