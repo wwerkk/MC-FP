@@ -1,11 +1,1 @@
-{
-	"filename" : "trebles.mp3",
-	"sr" : 48000,
-	"BPM" : 136,
-	"beat" : 0.25,
-	"n_classes" : 256,
-	"onset_detection" : 0,
-	"hop_length" : 10589,
-	"frame_length" : 21177,
-	"block_length" : 1
-}
+{"filename": "trebles.mp3", "sr": 44100, "BPM": 136, "beat": 0.25, "n_classes": 128, "maxlen": 256, "onset_detection": false, "hop_length": 19456, "frame_length": 19456, "block_length": 1}
