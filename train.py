@@ -14,7 +14,10 @@ from sklearn import preprocessing, cluster
 from streamer import Streamer
 import scipy
 from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint
 from keras.utils import to_categorical
+import pickle
+import matplotlib.ticker as mticker
 
 # parse arguments
 parser = argparse.ArgumentParser()
@@ -39,6 +42,12 @@ parser.add_argument("-d", "--directory", type=str, default=".") # directory to s
 parser.add_argument("-vs", "--validation_split", type=float, default=0.2)
 parser.add_argument("-pat", "--patience", type=int, default=15)
 parser.add_argument("-v", "--verbose", type=bool, default=False)
+parser.add_argument("--save_logs", type=bool, default=False)
+parser.add_argument("--plot", type=bool, default=False)
+parser.add_argument("--early_stopping", type=bool, default=False)
+parser.add_argument("--save_best", type=bool, default=True)
+parser.add_argument("--spectral_features", type=bool, default=False)
+parser.add_argument("--mfccs", type=bool, default=False)
 
 args = parser.parse_args()
 if args.audio_path is None:
@@ -50,6 +59,8 @@ elif not Path(args.audio_path).exists():
 
 audio_path = args.audio_path
 block_length = args.block_length
+mfccs = args.mfccs
+spectral_features = args.spectral_features
 n_classes = args.n_classes
 epochs = args.epochs
 batch_size = args.batch_size
@@ -57,6 +68,10 @@ maxlen = args.maxlen
 step = args.step
 hidden_units = args.hidden_units
 validation_split = args.validation_split
+save_logs = args.save_logs
+plot = args.plot
+early_stopping = args.early_stopping
+save_best = args.save_best
 workers = args.workers
 patience = args.patience
 
@@ -76,30 +91,46 @@ sr = librosa.get_samplerate(audio_path)
 frame_length = math.ceil(frame_length_s * sr) if frame_length_s is not None else args.frame_length
 hop_length = math.ceil(hop_length_s * sr) if hop_length_s is not None else args.hop_length
 stream = Streamer(audio_path, block_length, frame_length, hop_length)
+path = Path(directory + "/models/" + name)
+path.mkdir(exist_ok=True, parents=True)
 
 # helper function to extract features from audio block
-def extract_features(y, sr):
+def extract_features(y, sr, spectral_features=False, mfccs=False):
     zcr = [librosa.zero_crossings(y).sum()]
     energy = [scipy.linalg.norm(y)]
-    spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
-    spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr)
-    spectral_flatness = librosa.feature.spectral_flatness(y=y)
-    spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-    m_centroid = np.median(spectral_centroid, axis=1)
-    m_bandwith = np.median(spectral_bandwith, axis=1)
-    m_flatness = np.median(spectral_flatness, axis=1)
-    m_rolloff = np.median(spectral_rolloff, axis=1)
-    if y.size >= 2048:  
-        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
-    else:
-        mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
-    m_mfccs = np.median(mfccs[1:], axis=1)
-    if m_mfccs.size == 0:
-        print("Empty frame!")
-        return None
-    else:        
-        features = np.concatenate((zcr, energy, m_centroid, m_bandwith, m_flatness, m_rolloff, m_mfccs))
-        return features
+    if spectral_features:
+        spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
+        spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr)
+        spectral_flatness = librosa.feature.spectral_flatness(y=y)
+        spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+        m_centroid = np.median(spectral_centroid, axis=1)
+        m_bandwith = np.median(spectral_bandwith, axis=1)
+        m_flatness = np.median(spectral_flatness, axis=1)
+        m_rolloff = np.median(spectral_rolloff, axis=1)
+    if mfccs:        
+        if y.size >= 2048:  
+            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
+        else:
+            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
+        m_mfccs = np.median(mfccs[1:], axis=1)
+    features = np.concatenate((
+        zcr,
+        energy
+    ))
+    if spectral_features:
+        features = np.concatenate((
+            features,
+            m_centroid,
+            m_bandwith,
+            m_flatness,
+            m_rolloff
+        ))
+    if mfccs:
+        features = np.concatenate((
+            features,
+            m_mfccs
+        ))
+    return features
     
 
 print(f"Audio length: {stream.length}s, {stream.n_samples} samples")
@@ -115,16 +146,30 @@ features = np.array([extract_features(block, sr) for block in stream.new()])
 features_scaled = preprocessing.scale(features, axis=0) # should it be axis 0 then not 1??
 if verbose:
     # print(features[0])
-    print(features.shape)
-    print(features_scaled.shape)
-    print(features_scaled.min(axis=0))
-    print(features_scaled.max(axis=0))
-    print(features_scaled[0]) # type: ignore
+    print(f"Features shape: {features.shape} (sanity check)")
+    print("Minimum value on axis 0: ", features.min(axis=0))
+    print("Maximum value on axis 0: ", features.max(axis=0))
+    print(f"Scaled features shape: {features_scaled.shape} (sanity check)")
+    print("Minimum scaled value on axis 0: ", features_scaled.min(axis=0))
+    print("Maximum scaled value on axis 0: ", features_scaled.max(axis=0))
+    # print(features_scaled[0]) # type: ignore
 
 # cluster features
 # frames = [frame for frame in frames if frame.size != 0] # remove empty
 c_model = cluster.KMeans(n_clusters=n_classes, n_init='auto')
 labels = c_model.fit_predict(features_scaled)
+
+# Define a color map for the clusters
+cmap = plt.cm.get_cmap('viridis', n_classes)
+# Plot the data points with colors corresponding to their labels and add labels to legend
+for i in range(n_classes):
+    plt.scatter(features[labels==i, 0], features[labels==i, 1], color=cmap(i), alpha=0.6, label='Class {}'.format(i+1))
+plt.xlabel("Zero Crossing Rate")
+plt.ylabel("Energy")
+# plt.legend()
+# save plot
+plt.savefig(path / (name + "_clusters.png"))
+plt.show()
 
 n_labels = len(np.unique(labels))
 labels = labels.tolist()
@@ -165,6 +210,9 @@ if verbose:
     print(x_.shape)
     print(y_.shape)
 
+print(f"Saving to: {path}")
+model_path = path / (name + ".keras")
+
 # adapted from code by Lukas Biewald
 # https://github.com/lukas/ml-class/blob/master/projects/7-text-generation/char-gen.py
 inputs = Input(shape=(maxlen, n_labels))
@@ -173,6 +221,13 @@ outputs = Dense(n_labels, activation='softmax')(x)
 model = Model(inputs=inputs, outputs=outputs)
 model._name = name
 es = EarlyStopping(monitor='val_loss', patience=patience)
+checkpoint = ModelCheckpoint(
+    filepath=model_path,
+    save_weights_only=True,
+    monitor='val_accuracy',
+    mode='max',
+    save_best_only=True
+)
 model.compile(
     loss='categorical_crossentropy', # since we are using one-hot encoded labels
     optimizer="adam",
@@ -180,6 +235,11 @@ model.compile(
     )
 model.summary()
 
+callbacks = []
+if early_stopping:
+    callbacks.append(es)
+if save_best:
+    callbacks.append(checkpoint)
 history = model.fit(
     x_,
     y_,
@@ -187,13 +247,12 @@ history = model.fit(
     epochs=epochs,
     verbose=verbose,
     validation_split=0.2,
-    callbacks=[es]
+    callbacks=callbacks,
 )
 
-path = Path(directory + "/models/" + name)
-print(f"Saving model to: {path}")
-path.mkdir(exist_ok=True, parents=True)
-model_path = path / (name + ".keras")
+h_path = path / (name + "_history")
+with open(h_path, 'wb') as file_pi:
+    pickle.dump(history.history, file_pi)
 model.save(model_path)
 d_path = path / (name + "_frames.json")
 d_path.write_text(json.dumps(labelled_frames, cls=NumpyEncoder))
@@ -210,7 +269,30 @@ config["frame_length"] = frame_length
 config["block_length"] = block_length
 c_path = path / (name + "_config.json")    
 c_path.write_text(json.dumps(config))
+
+history = history.history
+plt.plot(history["loss"], label="loss")
+plt.plot(history["val_loss"], label="val_loss")
+# plt.gca().xaxis.set_major_locator(mticker.MultipleLocator(1))
+plt.legend(loc="upper left")
+plt.title("Loss metrics")
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.savefig(path / (name + "_loss.png"))
+plt.show()
+
+plt.plot(history["accuracy"], label="accuracy")
+plt.plot(history["val_accuracy"], label="val_accuracy")
+# plt.gca().xaxis.set_major_locator(mticker.MultipleLocator(1))
+plt.legend(loc="upper left")
+plt.title("Accuracy metrics")
+plt.xlabel("Epoch")
+plt.ylabel("Accuracy")
+plt.savefig(path / (name + "_accuracy.png"))
+
 if verbose:
+    print(f"Saved logs to: {h_path}")
     print(f"Saved model to: {model_path}")
     print(f"Saved frames to: {d_path}")
     print(f"Saved config to: {c_path}")
+    print(f"Saved training history to: {h_path}")

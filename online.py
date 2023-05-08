@@ -37,7 +37,7 @@ def sample(preds, temperature=1.0):
 
 # Generate output
 def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose=0):
-    print("Read prompt: ", prompt)
+    # print("Read prompt: ", prompt)
     # generate a sequence of given length       
     if len(prompt) == 0:
         # if it's there's no prompt, use an array of zeroes
@@ -95,7 +95,7 @@ def handle_g(unused_addr, args, msg):
                 prompt = list(map(int, prompt))
     print(f"Sequence length changed to: {sequence_length}")
     print(f"Temperature changed to: {temperature}")
-    print(f"Started generation with new parameters and prompt: {prompt}")
+    # print(f"Started generation with new parameters and prompt: {prompt}")
 
 def osc_thread():
     print("Starting OSC thread...")
@@ -129,7 +129,6 @@ name = path.split("/")[-1]
 with lock:
     path = path + "/"
     verbose = False
-    sequence_length = 32
     temperature = 1.0
     server_port = 8888
     client_port = 9999
@@ -156,6 +155,7 @@ filename = config['filename']
 sr = config['sr']
 n_classes = config['n_classes']
 maxlen = config['maxlen']
+sequence_length = maxlen
 print("maxlen: ", maxlen)
 onset_detection = config['onset_detection']
 frame_length = config['frame_length']
