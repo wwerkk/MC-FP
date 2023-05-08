@@ -22,3 +22,4 @@ models/drumloop2-spectral/*
 models/drumloop2-crude-mfccs/*
 models/drumloop2-crude-spectral/*
 models/drumloop2-crude-spectral-mfccs/*
+offline.py
