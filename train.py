@@ -47,8 +47,6 @@ parser.add_argument("--save_logs", type=bool, default=False)
 parser.add_argument("--plot", type=bool, default=False)
 parser.add_argument("--early_stopping", type=bool, default=False)
 parser.add_argument("--save_best", type=bool, default=True)
-parser.add_argument("--crude", type=bool, default=True)
-parser.add_argument("--spectral", type=bool, default=False)
 parser.add_argument("--mfccs", type=bool, default=False)
 parser.add_argument("--n_fft", type=bool, default=2048)
 parser.add_argument("--fx_hop_length", type=bool, default=2048)
@@ -63,9 +61,7 @@ elif not Path(args.audio_path).exists():
 
 audio_path = args.audio_path
 block_length = args.block_length
-extract_crude = args.crude
 extract_mfccs = args.mfccs
-extract_spectral = args.spectral
 n_fft = args.n_fft
 fx_hop_length = args.fx_hop_length
 n_classes = args.n_classes
@@ -103,10 +99,7 @@ path = Path(directory + "/models/" + name)
 path.mkdir(exist_ok=True, parents=True)
 
 # helper function to extract features from audio block
-def extract_features(y, sr, extract_crude=True, extract_spectral=False, extract_mfccs=False, n_fft=2048, hop_length=2048):
-    if extract_crude:
-        zcr = [librosa.zero_crossings(y).sum()]
-        energy = [scipy.linalg.norm(y)]
+def extract_features(y, sr, extract_spectral=False, extract_mfccs=False, n_fft=2048, hop_length=2048):
     if extract_spectral:
         spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
         spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
@@ -123,20 +116,13 @@ def extract_features(y, sr, extract_crude=True, extract_spectral=False, extract_
             mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
         m_mfccs = np.median(mfccs[1:], axis=1)
     features = np.array([])
-    if extract_crude:
-            features = np.concatenate((
-            features,
-            zcr,
-            energy
+    features = np.concatenate((
+        features,
+        m_centroid,
+        m_bandwith,
+        m_flatness,
+        m_rolloff
     ))
-    if extract_spectral:
-        features = np.concatenate((
-            features,
-            m_centroid,
-            m_bandwith,
-            m_flatness,
-            m_rolloff
-        ))
     if extract_mfccs:
         features = np.concatenate((
             features,
@@ -155,7 +141,7 @@ print(f"Block length: {block_length} frame(s)")
 print(f"Number of blocks: {len(stream)}")
 
 # extract features from each block in audio stream
-features = np.array([extract_features(block, sr, extract_crude=extract_crude, extract_spectral=extract_spectral, extract_mfccs=extract_mfccs, n_fft=n_fft, hop_length=fx_hop_length) for block in stream.new()])
+features = np.array([extract_features(block, sr, extract_mfccs=extract_mfccs, n_fft=n_fft, hop_length=fx_hop_length) for block in stream.new()])
 # features_scaled = features
 min_max_scaler = preprocessing.MinMaxScaler(feature_range=(-1, 1))
 features_scaled = min_max_scaler.fit_transform(features)
