@@ -2,9 +2,10 @@
 import argparse
 from pathlib import Path
 import math
-import numpy as np, matplotlib.pyplot as plt, librosa
+import numpy as np
+import matplotlib.pyplot as plt
+import librosa
 import librosa.display
-# import IPython.display
 from keras.models import Model
 from keras.layers import Input, Dense
 from keras.layers import GRU
@@ -50,6 +51,7 @@ parser.add_argument("--save_best", type=bool, default=True)
 parser.add_argument("--mfccs", type=bool, default=False)
 parser.add_argument("--n_fft", type=bool, default=2048)
 parser.add_argument("--fx_hop_length", type=bool, default=2048)
+parser.add_argument("--beat_detect", type=bool, default=False)
 
 args = parser.parse_args()
 if args.audio_path is None:
@@ -61,6 +63,7 @@ elif not Path(args.audio_path).exists():
 
 audio_path = args.audio_path
 block_length = args.block_length
+beat_detect = args.beat_detect
 extract_mfccs = args.mfccs
 n_fft = args.n_fft
 fx_hop_length = args.fx_hop_length
@@ -83,9 +86,15 @@ name = args.name
 directory = args.directory
 verbose = args.verbose
 
+
 BPM = args.bpm
 beat = args.beat
 hop_beats = args.hop_beats
+
+if beat_detect:
+    y, sr = librosa.load(audio_path)
+    BPM = librosa.beat.tempo(y=y, sr=sr)[0]
+    print("BPM detected: ", BPM)
 if BPM is None and beat is not None or BPM is not None and beat is None:
     print("Please specify both BPM and beat if you are using metered divisions.")
     exit()
@@ -99,16 +108,15 @@ path = Path(directory + "/models/" + name)
 path.mkdir(exist_ok=True, parents=True)
 
 # helper function to extract features from audio block
-def extract_features(y, sr, extract_spectral=False, extract_mfccs=False, n_fft=2048, hop_length=2048):
-    if extract_spectral:
-        spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
-        spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
-        spectral_flatness = librosa.feature.spectral_flatness(y=y, n_fft=n_fft, hop_length=hop_length)
-        spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
-        m_centroid = np.median(spectral_centroid, axis=1)
-        m_bandwith = np.median(spectral_bandwith, axis=1)
-        m_flatness = np.median(spectral_flatness, axis=1)
-        m_rolloff = np.median(spectral_rolloff, axis=1)
+def extract_features(y, sr, extract_mfccs=False, n_fft=2048, hop_length=2048):
+    spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+    spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+    spectral_flatness = librosa.feature.spectral_flatness(y=y, n_fft=n_fft, hop_length=hop_length)
+    spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+    m_centroid = np.median(spectral_centroid, axis=1)
+    m_bandwith = np.median(spectral_bandwith, axis=1)
+    m_flatness = np.median(spectral_flatness, axis=1)
+    m_rolloff = np.median(spectral_rolloff, axis=1)
     if extract_mfccs:        
         if y.size >= n_fft:  
             mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False, n_fft=n_fft, hop_length=hop_length) # mfccs
