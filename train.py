@@ -92,8 +92,10 @@ beat = args.beat
 hop_beats = args.hop_beats
 
 if beat_detect:
-    y, sr = librosa.load(audio_path)
-    BPM = librosa.beat.tempo(y=y, sr=sr)[0]
+    tempo, beat_times = librosa.beat.beat_track(y=y, sr=sr, start_bpm=60, units='time')
+    BPM = round(tempo)
+    if BPM < 100:
+        BPM *= 2
     print("BPM detected: ", BPM)
 if BPM is None and beat is not None or BPM is not None and beat is None:
     print("Please specify both BPM and beat if you are using metered divisions.")
