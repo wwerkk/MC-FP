@@ -46,7 +46,6 @@ class Streamer:
             i = random.randrange(0, max, 2) # generate a random even value, start/end values are interleaved
             print(f"Random index: {i}")
         start = dictionary[label][i] # start of frame sample
-        print(start)
         end = dictionary[label][i+1] # end of frame sample
         if verbose:
             print(f"Frame start and end indices: {start}, {end}")

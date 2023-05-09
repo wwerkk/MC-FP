@@ -47,8 +47,11 @@ parser.add_argument("--save_logs", type=bool, default=False)
 parser.add_argument("--plot", type=bool, default=False)
 parser.add_argument("--early_stopping", type=bool, default=False)
 parser.add_argument("--save_best", type=bool, default=True)
-parser.add_argument("--spectral_features", type=bool, default=False)
+parser.add_argument("--crude", type=bool, default=True)
+parser.add_argument("--spectral", type=bool, default=False)
 parser.add_argument("--mfccs", type=bool, default=False)
+parser.add_argument("--n_fft", type=bool, default=2048)
+parser.add_argument("--fx_hop_length", type=bool, default=2048)
 
 args = parser.parse_args()
 if args.audio_path is None:
@@ -60,8 +63,11 @@ elif not Path(args.audio_path).exists():
 
 audio_path = args.audio_path
 block_length = args.block_length
-mfccs = args.mfccs
-spectral_features = args.spectral_features
+extract_crude = args.crude
+extract_mfccs = args.mfccs
+extract_spectral = args.spectral
+n_fft = args.n_fft
+fx_hop_length = args.fx_hop_length
 n_classes = args.n_classes
 save_labelled = args.save_labelled
 epochs = args.epochs
@@ -97,29 +103,33 @@ path = Path(directory + "/models/" + name)
 path.mkdir(exist_ok=True, parents=True)
 
 # helper function to extract features from audio block
-def extract_features(y, sr, spectral_features=False, mfccs=False):
-    zcr = [librosa.zero_crossings(y).sum()]
-    energy = [scipy.linalg.norm(y)]
-    if spectral_features:
-        spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
-        spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr)
-        spectral_flatness = librosa.feature.spectral_flatness(y=y)
-        spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+def extract_features(y, sr, extract_crude=True, extract_spectral=False, extract_mfccs=False, n_fft=2048, hop_length=2048):
+    if extract_crude:
+        zcr = [librosa.zero_crossings(y).sum()]
+        energy = [scipy.linalg.norm(y)]
+    if extract_spectral:
+        spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+        spectral_bandwith = librosa.feature.spectral_bandwidth(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
+        spectral_flatness = librosa.feature.spectral_flatness(y=y, n_fft=n_fft, hop_length=hop_length)
+        spectral_rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr, n_fft=n_fft, hop_length=hop_length)
         m_centroid = np.median(spectral_centroid, axis=1)
         m_bandwith = np.median(spectral_bandwith, axis=1)
         m_flatness = np.median(spectral_flatness, axis=1)
         m_rolloff = np.median(spectral_rolloff, axis=1)
-    if mfccs:        
-        if y.size >= 2048:  
-            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False) # mfccs
+    if extract_mfccs:        
+        if y.size >= n_fft:  
+            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False, n_fft=n_fft, hop_length=hop_length) # mfccs
         else:
             mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
         m_mfccs = np.median(mfccs[1:], axis=1)
-    features = np.concatenate((
-        zcr,
-        energy
+    features = np.array([])
+    if extract_crude:
+            features = np.concatenate((
+            features,
+            zcr,
+            energy
     ))
-    if spectral_features:
+    if extract_spectral:
         features = np.concatenate((
             features,
             m_centroid,
@@ -127,11 +137,13 @@ def extract_features(y, sr, spectral_features=False, mfccs=False):
             m_flatness,
             m_rolloff
         ))
-    if mfccs:
+    if extract_mfccs:
         features = np.concatenate((
             features,
             m_mfccs
         ))
+    if len(features) == 0:
+        return None
     return features
     
 
@@ -143,7 +155,7 @@ print(f"Block length: {block_length} frame(s)")
 print(f"Number of blocks: {len(stream)}")
 
 # extract features from each block in audio stream
-features = np.array([extract_features(block, sr) for block in stream.new()])
+features = np.array([extract_features(block, sr, extract_crude=extract_crude, extract_spectral=extract_spectral, extract_mfccs=extract_mfccs, n_fft=n_fft, hop_length=fx_hop_length) for block in stream.new()])
 # features_scaled = features
 min_max_scaler = preprocessing.MinMaxScaler(feature_range=(-1, 1))
 features_scaled = min_max_scaler.fit_transform(features)
