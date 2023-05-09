@@ -31,6 +31,7 @@ parser.add_argument("-bpm", "--bpm", type=int, default=None)
 parser.add_argument("-bt", "--beat", type=float, default=None)
 parser.add_argument("-hb", "--hop_beats", type=float, default=None)
 parser.add_argument("-nc", "--n_classes", type=int, default=64)
+parser.add_argument("--save_labelled", type=bool, default=False)
 parser.add_argument("-e", "--epochs", type=int, default=3)
 parser.add_argument("-bs", "--batch_size", type=int, default=64)
 parser.add_argument("-ml", "--maxlen", type=int, default=256)
@@ -62,6 +63,7 @@ block_length = args.block_length
 mfccs = args.mfccs
 spectral_features = args.spectral_features
 n_classes = args.n_classes
+save_labelled = args.save_labelled
 epochs = args.epochs
 batch_size = args.batch_size
 maxlen = args.maxlen
@@ -173,6 +175,13 @@ plt.show()
 
 n_labels = len(np.unique(labels))
 labels = labels.tolist()
+
+if save_labelled:
+    # save labelled sequence of frames
+    labels_path = path / (name + "_labels.csv")
+    np.savetxt(labels_path, (labels), fmt='%s,')
+    print(f"Labelled sequence saved to {labels_path}")
+
 if verbose:
     print(f"Total labelled frames: {len(labels)}")
     print(f"n_labels: {n_labels} (sanity check)")
