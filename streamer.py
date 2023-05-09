@@ -38,10 +38,13 @@ class Streamer:
         return self.stream
     
     ## TODO: fix for block length > 1
-    def get_frame(self, dictionary, label, verbose=False):
+    def get_frame(self, dictionary, label, index=-1, verbose=False):
         max = len(dictionary[label])
-        i = random.randrange(0, max, 2) # generate a random even value, start/end values are interleaved
-        print(f"Random index: {i}")
+        if index != -1:
+            i = index
+        else:
+            i = random.randrange(0, max, 2) # generate a random even value, start/end values are interleaved
+            print(f"Random index: {i}")
         start = dictionary[label][i] # start of frame sample
         print(start)
         end = dictionary[label][i+1] # end of frame sample
