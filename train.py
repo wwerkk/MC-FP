@@ -145,7 +145,9 @@ print(f"Number of blocks: {len(stream)}")
 # extract features from each block in audio stream
 features = np.array([extract_features(block, sr) for block in stream.new()])
 # features_scaled = features
-features_scaled = preprocessing.scale(features, axis=0) # should it be axis 0 then not 1??
+min_max_scaler = preprocessing.MinMaxScaler(feature_range=(-1, 1))
+features_scaled = min_max_scaler.fit_transform(features)
+features_scaled = preprocessing.scale(features) # should it be axis 0 then not 1??
 if verbose:
     # print(features[0])
     print(f"Features shape: {features.shape} (sanity check)")
