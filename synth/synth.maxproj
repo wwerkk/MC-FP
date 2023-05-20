@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3765560192,
+	"modificationdate" : 3765562502,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -196,16 +196,6 @@
 
 			}
 ,
-			"cut_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
-					"projectrelativepath" : "../models/cut"
-				}
-
-			}
-,
 			"colllins-16th_config.json" : 			{
 				"kind" : "json",
 				"local" : 1,
@@ -232,6 +222,16 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-16th",
 					"projectrelativepath" : "../models/collins-16th"
+				}
+
+			}
+,
+			"sweep_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep",
+					"projectrelativepath" : "../models/sweep"
 				}
 
 			}
@@ -266,22 +266,12 @@
 
 			}
 ,
-			"sweep_config.json" : 			{
+			"cut_frames.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/sweep",
-					"projectrelativepath" : "../../MC-FP-umap/models/sweep"
-				}
-
-			}
-,
-			"sweep_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/sweep",
-					"projectrelativepath" : "../../MC-FP-umap/models/sweep"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
+					"projectrelativepath" : "../models/cut"
 				}
 
 			}
@@ -290,8 +280,8 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/drumloop",
-					"projectrelativepath" : "../../MC-FP-umap/models/drumloop"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop",
+					"projectrelativepath" : "../models/drumloop"
 				}
 
 			}
@@ -300,8 +290,18 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/drumloop",
-					"projectrelativepath" : "../../MC-FP-umap/models/drumloop"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop",
+					"projectrelativepath" : "../models/drumloop"
+				}
+
+			}
+,
+			"sweep_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep",
+					"projectrelativepath" : "../models/sweep"
 				}
 
 			}
@@ -325,6 +325,16 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/trebles",
 					"projectrelativepath" : "../models/trebles"
+				}
+
+			}
+,
+			"sweep.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep",
+					"projectrelativepath" : "../models/sweep"
 				}
 
 			}
@@ -385,16 +395,6 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
 					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
-				}
-
-			}
-,
-			"sweep.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/sweep",
-					"projectrelativepath" : "../../MC-FP-umap/models/sweep"
 				}
 
 			}

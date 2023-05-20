@@ -103,11 +103,6 @@ if verbose:
     print(features_scaled.min(axis=0))
     print(features_scaled.max(axis=0))
     print(features_scaled[0]) # type: ignore
-if verbose:
-    plt.scatter(features_scaled[:,0], features_scaled[:,1]) # type: ignore
-    plt.xlabel('Zero Crossing Rate (scaled)')
-    plt.ylabel('Spectral Centroid (scaled)')   
-    plt.show()
 
 # cluster features
 # frames = [frame for frame in frames if frame.size != 0] # remove empty
