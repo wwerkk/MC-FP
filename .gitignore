@@ -52,3 +52,4 @@ TrainingDebug-pulsex.ipynb
 TrainingDebug-sweep.ipynb
 TrainingDebug.ipynb
 TrainingDebug-drumloop-delta-umap-2.ipynb
+*.wav

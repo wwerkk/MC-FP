@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3765730967,
+	"modificationdate" : 3768081435,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -10,15 +10,20 @@
 	"autolocalize" : 0,
 	"contents" : 	{
 		"patchers" : 		{
-			"synth.maxpat" : 			{
+			"synth-gen.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1
 			}
 ,
-			"synth-gen.maxpat" : 			{
+			"synth-debug.maxpat" : 			{
 				"kind" : "patcher",
 				"local" : 1,
 				"toplevel" : 1
+			}
+,
+			"synth.maxpat" : 			{
+				"kind" : "patcher",
+				"local" : 1
 			}
 ,
 			"gen_test.maxpat" : 			{
@@ -34,7 +39,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
 				}
 
 			}
@@ -44,7 +49,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
 				}
 
 			}
@@ -54,7 +59,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
 				}
 
 			}
@@ -64,7 +69,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
 				}
 
 			}
@@ -74,7 +79,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
 				}
 
 			}
@@ -84,7 +89,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
 				}
 
 			}
@@ -94,7 +99,7 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
 				}
 
 			}
@@ -104,7 +109,127 @@
 				"local" : 1,
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/audio-data",
-					"projectrelativepath" : "../audio-data"
+					"projectrelativepath" : "../../MC-FP-master/audio-data"
+				}
+
+			}
+,
+			"drumloop2_accuracy.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
+					"projectrelativepath" : "../models/drumloop2"
+				}
+
+			}
+,
+			"drumloop2_clusters.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
+					"projectrelativepath" : "../models/drumloop2"
+				}
+
+			}
+,
+			"drumloop2_loss.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
+					"projectrelativepath" : "../models/drumloop2"
+				}
+
+			}
+,
+			"collins_accuracy.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
+				}
+
+			}
+,
+			"collins_clusters.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
+				}
+
+			}
+,
+			"collins_loss.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
+				}
+
+			}
+,
+			"collins-0.5_accuracy.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-0.5_clusters.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-0.5_loss.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-overlap_accuracy.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
+				}
+
+			}
+,
+			"collins-overlap_clusters.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
+				}
+
+			}
+,
+			"collins-overlap_loss.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
 				}
 
 			}
@@ -116,211 +241,11 @@
 		}
 ,
 		"data" : 		{
-			"flux_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/flux",
-					"projectrelativepath" : "../models/flux"
-				}
-
-			}
-,
-			"flux_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/flux",
-					"projectrelativepath" : "../models/flux"
-				}
-
-			}
-,
-			"trebles_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/trebles",
-					"projectrelativepath" : "../models/trebles"
-				}
-
-			}
-,
-			"trebles_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/trebles",
-					"projectrelativepath" : "../models/trebles"
-				}
-
-			}
-,
-			"pulsex_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/pulsex",
-					"projectrelativepath" : "../models/pulsex"
-				}
-
-			}
-,
-			"pulsex_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/pulsex",
-					"projectrelativepath" : "../models/pulsex"
-				}
-
-			}
-,
-			"collins-8th_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-8th",
-					"projectrelativepath" : "../models/collins-8th"
-				}
-
-			}
-,
-			"collins-8th_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-8th",
-					"projectrelativepath" : "../models/collins-8th"
-				}
-
-			}
-,
-			"cut_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
-					"projectrelativepath" : "../models/cut"
-				}
-
-			}
-,
-			"colllins-16th_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
-					"projectrelativepath" : "../models/cut"
-				}
-
-			}
-,
-			"colllins-16th_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
-					"projectrelativepath" : "../models/cut"
-				}
-
-			}
-,
-			"collins-16th_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-16th",
-					"projectrelativepath" : "../models/collins-16th"
-				}
-
-			}
-,
-			"sweep_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep",
-					"projectrelativepath" : "../models/sweep"
-				}
-
-			}
-,
-			"collins-16th_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-16th",
-					"projectrelativepath" : "../models/collins-16th"
-				}
-
-			}
-,
-			"trebles-8th_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
-					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
-				}
-
-			}
-,
-			"trebles-8th_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
-					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
-				}
-
-			}
-,
-			"cut_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
-					"projectrelativepath" : "../models/cut"
-				}
-
-			}
-,
-			"drumloop_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop",
-					"projectrelativepath" : "../models/drumloop"
-				}
-
-			}
-,
-			"drumloop_frames.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop",
-					"projectrelativepath" : "../models/drumloop"
-				}
-
-			}
-,
-			"sweep_config.json" : 			{
-				"kind" : "json",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep",
-					"projectrelativepath" : "../models/sweep"
-				}
-
-			}
-,
 			"drumloop2_config.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop2",
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
 					"projectrelativepath" : "../models/drumloop2"
 				}
 
@@ -330,28 +255,68 @@
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop2",
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
 					"projectrelativepath" : "../models/drumloop2"
 				}
 
 			}
 ,
-			"sweep2_config.json" : 			{
+			"collins_config.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep2",
-					"projectrelativepath" : "../models/sweep2"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
 				}
 
 			}
 ,
-			"sweep2_frames.json" : 			{
+			"collins_frames.json" : 			{
 				"kind" : "json",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep2",
-					"projectrelativepath" : "../models/sweep2"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
+				}
+
+			}
+,
+			"collins-0.5_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-0.5_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-overlap_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
+				}
+
+			}
+,
+			"collins-overlap_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
 				}
 
 			}
@@ -359,122 +324,122 @@
 		}
 ,
 		"other" : 		{
-			"flux.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/flux",
-					"projectrelativepath" : "../models/flux"
-				}
-
-			}
-,
-			"trebles.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/trebles",
-					"projectrelativepath" : "../models/trebles"
-				}
-
-			}
-,
-			"sweep.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep",
-					"projectrelativepath" : "../models/sweep"
-				}
-
-			}
-,
-			"pulsex.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/pulsex",
-					"projectrelativepath" : "../models/pulsex"
-				}
-
-			}
-,
-			"collins-8th.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-8th",
-					"projectrelativepath" : "../models/collins-8th"
-				}
-
-			}
-,
-			"cut.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
-					"projectrelativepath" : "../models/cut"
-				}
-
-			}
-,
-			"colllins-16th.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/cut",
-					"projectrelativepath" : "../models/cut"
-				}
-
-			}
-,
-			"collins-16th.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/collins-16th",
-					"projectrelativepath" : "../models/collins-16th"
-				}
-
-			}
-,
-			"trebles-8th.keras" : 			{
-				"kind" : "file",
-				"local" : 1,
-				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-umap/models/trebles-8th",
-					"projectrelativepath" : "../../MC-FP-umap/models/trebles-8th"
-				}
-
-			}
-,
 			"drumloop2.keras" : 			{
 				"kind" : "file",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop2",
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
 					"projectrelativepath" : "../models/drumloop2"
 				}
 
 			}
 ,
-			"drumloop.keras" : 			{
+			"drumloop2_history" : 			{
 				"kind" : "file",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/drumloop",
-					"projectrelativepath" : "../models/drumloop"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
+					"projectrelativepath" : "../models/drumloop2"
 				}
 
 			}
 ,
-			"sweep2.keras" : 			{
+			"drumloop2_labels.csv" : 			{
 				"kind" : "file",
 				"local" : 1,
 				"singleton" : 				{
-					"bootpath" : "~/GS/MC/MC-FP/MC-FP-master/models/sweep2",
-					"projectrelativepath" : "../models/sweep2"
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2",
+					"projectrelativepath" : "../models/drumloop2"
+				}
+
+			}
+,
+			"collins.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
+				}
+
+			}
+,
+			"collins_history" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
+				}
+
+			}
+,
+			"collins_labels.csv" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins",
+					"projectrelativepath" : "../models/collins"
+				}
+
+			}
+,
+			"collins-0.5.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-0.5_history" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-0.5_labels.csv" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-0.5",
+					"projectrelativepath" : "../models/collins-0.5"
+				}
+
+			}
+,
+			"collins-overlap.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
+				}
+
+			}
+,
+			"collins-overlap_history" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
+				}
+
+			}
+,
+			"collins-overlap_labels.csv" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
+					"projectrelativepath" : "../models/collins-overlap"
 				}
 
 			}
@@ -491,7 +456,7 @@
 
 	}
 ,
-	"detailsvisible" : 0,
+	"detailsvisible" : 1,
 	"amxdtype" : 0,
 	"readonly" : 0,
 	"devpathtype" : 0,
