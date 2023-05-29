@@ -2,7 +2,7 @@
 	"name" : "synth",
 	"version" : 1,
 	"creationdate" : 3764158020,
-	"modificationdate" : 3768081435,
+	"modificationdate" : 3768177995,
 	"viewrect" : [ 25.0, 106.0, 300.0, 500.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
@@ -233,6 +233,36 @@
 				}
 
 			}
+,
+			"drumloop2-tiny_accuracy.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
+				}
+
+			}
+,
+			"drumloop2-tiny_clusters.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
+				}
+
+			}
+,
+			"drumloop2-tiny_loss.png" : 			{
+				"kind" : "imagefile",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
+				}
+
+			}
 
 		}
 ,
@@ -317,6 +347,26 @@
 				"singleton" : 				{
 					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/collins-overlap",
 					"projectrelativepath" : "../models/collins-overlap"
+				}
+
+			}
+,
+			"drumloop2-tiny_config.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
+				}
+
+			}
+,
+			"drumloop2-tiny_frames.json" : 			{
+				"kind" : "json",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
 				}
 
 			}
@@ -443,6 +493,36 @@
 				}
 
 			}
+,
+			"drumloop2-tiny.keras" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
+				}
+
+			}
+,
+			"drumloop2-tiny_history" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
+				}
+
+			}
+,
+			"drumloop2-tiny_labels.csv" : 			{
+				"kind" : "file",
+				"local" : 1,
+				"singleton" : 				{
+					"bootpath" : "~/GS/MC/MC-FP/MC-FP-debug/models/drumloop2-tiny",
+					"projectrelativepath" : "../models/drumloop2-tiny"
+				}
+
+			}
 
 		}
 
@@ -462,5 +542,6 @@
 	"devpathtype" : 0,
 	"devpath" : ".",
 	"sortmode" : 0,
-	"viewmode" : 1
+	"viewmode" : 1,
+	"includepackages" : 0
 }
