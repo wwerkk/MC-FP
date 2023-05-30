@@ -22,36 +22,37 @@ import matplotlib.ticker as mticker
 
 # parse arguments
 parser = argparse.ArgumentParser()
+parser.add_argument("-n", "--name", type=str, default="newmodel") # model name
+parser.add_argument("-d", "--directory", type=str, default=".") # directory to save model
 parser.add_argument("-p", "--audio_path", type=str)
 parser.add_argument("-bl", "--block_length", type=int, default=1)
 parser.add_argument("-fl", "--frame_length", type=int, default=48000)
 parser.add_argument("-hl", "--hop_length", type=int, default=12000)
-parser.add_argument("-fls", "--frame_length_s", type=float, default=None)
-parser.add_argument("-hls", "--hop_length_s", type=float, default=None)
+# parser.add_argument("-fls", "--frame_length_s", type=float, default=None)
+# parser.add_argument("-hls", "--hop_length_s", type=float, default=None)
+parser.add_argument("-dbpm", "--detect_bpm", type=bool, default=False)
 parser.add_argument("-bpm", "--bpm", type=int, default=None)
-parser.add_argument("-bt", "--beat", type=float, default=None)
+parser.add_argument("-fb", "--frame_beats", type=float, default=None)
 parser.add_argument("-hb", "--hop_beats", type=float, default=None)
+parser.add_argument("--n_fft", type=bool, default=2048)
+parser.add_argument("-mfccs", "--mfccs", type=bool, default=False)
+
 parser.add_argument("-nc", "--n_classes", type=int, default=64)
-parser.add_argument("--save_labelled", type=bool, default=False)
+parser.add_argument("--save_labelled", type=bool, default=True)
 parser.add_argument("-e", "--epochs", type=int, default=3)
 parser.add_argument("-bs", "--batch_size", type=int, default=64)
 parser.add_argument("-ml", "--maxlen", type=int, default=256)
 parser.add_argument("-s", "--step", type=int, default=1)
 parser.add_argument("-hu", "--hidden_units", type=int, default=24)
 parser.add_argument("-w", "--workers", type=int, default=8)
-parser.add_argument("-n", "--name", type=str, default="newmodel") # model name
-parser.add_argument("-d", "--directory", type=str, default=".") # directory to save model
 parser.add_argument("-vs", "--validation_split", type=float, default=0.2)
 parser.add_argument("-pat", "--patience", type=int, default=15)
-parser.add_argument("-v", "--verbose", type=bool, default=False)
-parser.add_argument("--save_logs", type=bool, default=False)
 parser.add_argument("--plot", type=bool, default=False)
+parser.add_argument("--fx_hop_length", type=bool, default=2048)
 parser.add_argument("--early_stopping", type=bool, default=False)
 parser.add_argument("--save_best", type=bool, default=True)
-parser.add_argument("--mfccs", type=bool, default=False)
-parser.add_argument("--n_fft", type=bool, default=2048)
-parser.add_argument("--fx_hop_length", type=bool, default=2048)
-parser.add_argument("--beat_detect", type=bool, default=False)
+parser.add_argument("--save_logs", type=bool, default=False)
+parser.add_argument("-v", "--verbose", type=bool, default=False)
 
 args = parser.parse_args()
 if args.audio_path is None:
@@ -63,7 +64,6 @@ elif not Path(args.audio_path).exists():
 
 audio_path = args.audio_path
 block_length = args.block_length
-beat_detect = args.beat_detect
 extract_mfccs = args.mfccs
 n_fft = args.n_fft
 fx_hop_length = args.fx_hop_length
@@ -86,25 +86,38 @@ name = args.name
 directory = args.directory
 verbose = args.verbose
 
+def file_BPM(audio_path):
+        y, sr = librosa.load(audio_path)
+        tempo, beat_times = librosa.beat.beat_track(y=y, sr=sr, start_bpm=60, units='time')
+        BPM = int(tempo)
+        if BPM < 100:
+            BPM *= 2
+        print("BPM detected: ", BPM)
+        return BPM
 
-BPM = args.bpm
-beat = args.beat
+if args.detect_bpm:
+    BPM = file_BPM(audio_path)
+else:
+    BPM = args.bpm
+frame_beats = args.frame_beats
 hop_beats = args.hop_beats
 
-if beat_detect:
-    tempo, beat_times = librosa.beat.beat_track(y=y, sr=sr, start_bpm=60, units='time')
-    BPM = round(tempo)
-    if BPM < 100:
-        BPM *= 2
-    print("BPM detected: ", BPM)
-if BPM is None and beat is not None or BPM is not None and beat is None:
-    print("Please specify both BPM and beat if you are using metered divisions.")
-    exit()
-frame_length_s = (4 * beat * 60 / BPM) if BPM is not None else args.frame_length_s
-hop_length_s = (4 * hop_beats * 60 / BPM) if BPM is not None else args.hop_length_s
+
+def beats_to_samples(beats, bpm, sr):
+    beats_per_second = bpm / 60.0
+    samples_per_beat = sr / beats_per_second
+    total_samples = int(samples_per_beat * beats)
+    return total_samples
+
 sr = librosa.get_samplerate(audio_path)
-frame_length = math.ceil(frame_length_s * sr) if frame_length_s is not None else args.frame_length
-hop_length = math.ceil(hop_length_s * sr) if hop_length_s is not None else args.hop_length
+if frame_beats is not None:
+    frame_length = beats_to_samples(frame_beats, BPM, sr)
+else:
+    frame_length = args.frame_length
+if hop_beats is not None:
+    hop_length = beats_to_samples(frame_beats, BPM, sr)
+else:
+    hop_length = args.hop_length
 stream = Streamer(audio_path, block_length, frame_length, hop_length)
 path = Path(directory + "/models/" + name)
 path.mkdir(exist_ok=True, parents=True)
@@ -119,12 +132,6 @@ def extract_features(y, sr, extract_mfccs=False, n_fft=2048, hop_length=2048):
     m_bandwith = np.median(spectral_bandwith, axis=1)
     m_flatness = np.median(spectral_flatness, axis=1)
     m_rolloff = np.median(spectral_rolloff, axis=1)
-    if extract_mfccs:        
-        if y.size >= n_fft:  
-            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False, n_fft=n_fft, hop_length=hop_length) # mfccs
-        else:
-            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
-        m_mfccs = np.median(mfccs[1:], axis=1)
     features = np.array([])
     features = np.concatenate((
         features,
@@ -134,6 +141,11 @@ def extract_features(y, sr, extract_mfccs=False, n_fft=2048, hop_length=2048):
         m_rolloff
     ))
     if extract_mfccs:
+        if y.size >= n_fft:  
+            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, center=False, n_fft=n_fft, hop_length=hop_length) # mfccs
+        else:
+            mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, n_fft=len(y), hop_length=len(y), center=False)
+        m_mfccs = np.median(mfccs[1:], axis=1)
         features = np.concatenate((
             features,
             m_mfccs
@@ -145,8 +157,8 @@ def extract_features(y, sr, extract_mfccs=False, n_fft=2048, hop_length=2048):
 
 print(f"Audio length: {stream.length}s, {stream.n_samples} samples")
 print(f"Sample rate: {sr} Hz")
-print(f"Frame length: {frame_length_s}s,  {frame_length} samples")
-print(f"Hop length: {hop_length_s}s, {hop_length} samples")
+print(f"Frame length: {frame_length/sr}s,  {frame_length} samples")
+print(f"Hop length: {hop_length/sr}s, {hop_length} samples")
 print(f"Block length: {block_length} frame(s)")
 print(f"Number of blocks: {len(stream)}")
 
@@ -183,13 +195,14 @@ plt.ylabel("Energy")
 plt.savefig(path / (name + "_clusters.png"))
 plt.show()
 
+
 n_labels = len(np.unique(labels))
 labels = labels.tolist()
 
 if save_labelled:
     # save labelled sequence of frames
     labels_path = path / (name + "_labels.csv")
-    np.savetxt(labels_path, (labels), fmt='%s,')
+    np.savetxt(labels_path, (labels), fmt='%s')
     print(f"Labelled sequence saved to {labels_path}")
 
 if verbose:
@@ -204,7 +217,7 @@ for i, block in enumerate(stream.new()):
 # each dict value has to be a 1D interlaved array, as Max dict object has trouble reading 2D arrays
 # start sample is always stored at an even index and is followed by end sample
 labelled_frames = dict()
-for label, frame in zip(labels, frames):
+for label, frame in zip(labels, frames): # type: ignore
     if label not in labelled_frames:
         labelled_frames[label] = []
     labelled_frames[label].extend(frame) # use extend instead of append
@@ -279,7 +292,8 @@ config = dict()
 config["filename"] = audio_path.split('/')[-1]
 config["sr"] = sr
 config["BPM"] = BPM
-config["beat"] = beat
+config["frame_beats"] = frame_beats
+config["hop_beats"] = hop_beats
 config["n_classes"] = n_classes
 config["maxlen"] = maxlen
 config["onset_detection"] = False
