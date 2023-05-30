@@ -32,17 +32,21 @@ def sample(preds, temperature=1.0):
     exp_preds = np.exp(preds)
     preds = exp_preds / np.sum(exp_preds)
     # print(preds)
-    probas = np.random.multinomial(1, preds, 1)
-    return np.argmax(probas)
+    if temperature > 0.01:
+        probas = np.random.multinomial(1, preds, 1)
+        return np.argmax(probas)
+    else:
+        return np.argmax(preds)
 
 # Generate output
 def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose=0):
     # print("Read prompt: ", prompt)
     # generate a sequence of given length       
     if len(prompt) == 0:
-        # if it's there's no prompt, use an array of zeroes
-        prompt = np.zeros((maxlen), dtype="uint8")
-        print(f"No prompt provided, using {maxlen} zeroes instead.")
+        # if it's there's no prompt, use an array from beginning of original seq
+        prompt = labels_seq[:maxlen]
+        # prompt = np.zeros((maxlen), dtype="uint8")
+        print(f"No prompt provided, using {maxlen} first labels instead.")
     elif len(prompt) < maxlen:
         # if prompt is too short, pad it with zeroes from the left to match correct input shape
         prompt = np.pad(prompt, (maxlen - len(prompt), 0), 'constant', constant_values=(0, 0))
@@ -51,6 +55,8 @@ def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose
         # if it's too long, then trim it
         prompt = prompt[-maxlen:]
         print(f"Prompt too long, using {maxlen} last elements: ")
+        # prompt = prompt[maxlen:]
+        # print(f"Prompt too long, using {maxlen} first elements: ")
     prompt_ = to_categorical(prompt, num_classes=n_classes)
     prompt_ = np.array([prompt_])
     
@@ -76,11 +82,13 @@ def generate(prompt=[], length=4, temperature=1.0, include_prompt=False, verbose
 def gen_thread():
     global prompt, seq
     while True:
-        print("Generating sequence...")
+        if verbose:
+            print("Generating...")
         with lock:
             seq = generate(prompt=prompt, length=sequence_length)
-            prompt.extend(seq) # add generated sequence to the prompt
-            prompt = prompt[-maxlen:] # take only last maxlen elements
+            # prompt.extend(seq) # add generated sequence to the prompt
+            # prompt = prompt[-maxlen:] # take only last maxlen elements
+        print(seq)
         client.send_message("/generated/", seq)
 
 def handle_g(unused_addr, args, msg):
@@ -147,7 +155,7 @@ with lock:
 
 config_path = path + f"{name}_config.json"
 dict_path = path + f"{name}_frames.json"
-features_path = path + f"{name}_features.json"
+labels_path = path + f"{name}_labels.csv"
 model_path = path + f"{name}.keras"
 
 config = json.load(open(config_path))
@@ -166,11 +174,9 @@ if verbose:
     for key, value in config.items():
         print(f"{key}: {value}")
 labelled_frames = json.load(open(dict_path))
+labels_seq = np.loadtxt(labels_path, dtype=int)
 if verbose:
     print(f"Labelled frames loaded.")
-# encoded_features = json.load(open(features_path))
-# if verbose:  
-# print(f"Encoded features loaded.")
 with lock:
     model = load_model(model_path)
 model.summary()
