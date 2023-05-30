@@ -1,0 +1,1 @@
+{"filename": "drumloop2.mp3", "sr": 48000, "BPM": 120, "frame_beats": 0.5, "hop_beats": 0.5, "n_classes": 3, "maxlen": 16, "onset_detection": false, "hop_length": 12000, "frame_length": 12000, "block_length": 1}
