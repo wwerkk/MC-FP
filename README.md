@@ -1,5 +1,5 @@
 # Music Computing Final Project
-This project attempts to implement language modelling for concatenative audio synthesis using RNNs (GRU).
+This project (naively) implements sequence modelling for concatenative audio synthesis using RNNs (GRU), largely inspired by techniques such as [CataRT](https://ircam-ismm.github.io/max-msp/catart.html).
 
 For more information, refer to the [Wiki](https://github.com/wwerkk/MC-FP/wiki).
 
